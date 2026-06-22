@@ -22,6 +22,26 @@
 <meta name="twitter:description" content="Business Analyst · BA × Tech Hybrid. Aligning business objectives with technology solutions." />
 <meta name="twitter:image" content="https://palmyqme.github.io/portfolio/PIC/og-image.png" />
 
+<!-- Google Analytics 4 — loads only after cookie consent -->
+<script>
+  window.GA_MEASUREMENT_ID = 'GA_MEASUREMENT_ID'; // Replace after GA4 setup
+  window.gaLoaded = false;
+  function loadGA() {
+    if (window.gaLoaded) return;
+    if (!window.GA_MEASUREMENT_ID || window.GA_MEASUREMENT_ID === 'GA_MEASUREMENT_ID') return; // not configured yet
+    window.gaLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+    s.async = true;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', window.GA_MEASUREMENT_ID, { anonymize_ip: true });
+  }
+</script>
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -315,6 +335,11 @@ body{font-size:clamp(14px,2.5vw,16px);}
     <div class="text-center">
       <p id="stat-roles" class="font-headline-lg text-headline-lg text-primary-container">1</p>
       <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mt-1">Current Role</p>
+    </div>
+    <div class="hidden md:block w-px bg-outline-variant/40"></div>
+    <div class="text-center">
+      <p id="visit-count" class="font-headline-lg text-headline-lg text-primary-container">—</p>
+      <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mt-1">Site Visits</p>
     </div>
   </div>
 </div>
@@ -1083,6 +1108,37 @@ body{font-size:clamp(14px,2.5vw,16px);}
   </div>
 </div>
 
+<!-- ===== COOKIE CONSENT BANNER ===== -->
+<div id="cookie-banner"
+  class="fixed bottom-0 left-0 right-0 z-[9999] p-4 md:p-6
+         bg-surface-container-high/95 backdrop-blur-xl
+         border-t border-outline-variant/40
+         flex flex-col md:flex-row items-start md:items-center
+         gap-4 md:gap-6 shadow-2xl
+         transition-transform duration-500"
+  style="transform: translateY(100%);">
+  <div class="flex-1">
+    <p class="font-label-caps text-label-caps text-primary uppercase tracking-widest mb-1">Cookie Notice</p>
+    <p class="text-body-md text-on-surface-variant leading-relaxed">
+      This site uses analytics cookies to understand how many people visit.
+      No personal data is collected or sold.
+    </p>
+  </div>
+  <div class="flex gap-3 flex-shrink-0">
+    <button id="cookie-decline"
+      class="px-5 py-2 rounded-lg border border-outline-variant text-on-surface-variant
+             hover:border-outline hover:text-on-surface transition-all text-sm font-medium ripple-container">
+      Decline
+    </button>
+    <button id="cookie-accept"
+      class="px-5 py-2 rounded-lg bg-primary text-on-primary
+             hover:bg-primary-container hover:text-on-primary-container
+             transition-all text-sm font-medium ripple-container">
+      Accept
+    </button>
+  </div>
+</div>
+<!-- ===== END COOKIE CONSENT BANNER ===== -->
 
 <script>
 /* ── CURSOR ── */
@@ -1434,6 +1490,61 @@ sections.forEach(s => activeObserver.observe(s));
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
+})();
+
+/* ── VISIT COUNTER ── */
+async function countVisit() {
+  try {
+    const res  = await fetch('https://api.countapi.xyz/hit/palmyqme/portfolio-visits');
+    const data = await res.json();
+    const el   = document.getElementById('visit-count');
+    if (el && data.value) {
+      if (window.countUp && window.countUp.CountUp) {
+        new window.countUp.CountUp('visit-count', data.value, { duration: 2 }).start();
+      } else {
+        el.textContent = data.value.toLocaleString();
+      }
+    }
+  } catch (e) {
+    // silently fail — counter just shows "—"
+  }
+}
+
+/* ── COOKIE CONSENT LOGIC ── */
+(function() {
+  const banner   = document.getElementById('cookie-banner');
+  const btnOk    = document.getElementById('cookie-accept');
+  const btnNo    = document.getElementById('cookie-decline');
+  const PREF_KEY = 'cookie_consent';
+  function showBanner() {
+    setTimeout(() => {
+      banner.style.transform = 'translateY(0)';
+    }, 1500); // show 1.5s after page load
+  }
+  function hideBanner() {
+    banner.style.transform = 'translateY(100%)';
+  }
+  function accept() {
+    localStorage.setItem(PREF_KEY, 'accepted');
+    hideBanner();
+    loadGA();         // fire GA now
+    countVisit();     // increment visit counter
+  }
+  function decline() {
+    localStorage.setItem(PREF_KEY, 'declined');
+    hideBanner();
+  }
+  btnOk.addEventListener('click', accept);
+  btnNo.addEventListener('click', decline);
+  // On load — check stored preference
+  const stored = localStorage.getItem(PREF_KEY);
+  if (stored === 'accepted') {
+    loadGA();
+    countVisit();
+  } else if (!stored) {
+    showBanner(); // first visit — show banner
+  }
+  // if 'declined' — do nothing, stay hidden
 })();
 </script>
 </body>
