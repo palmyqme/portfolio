@@ -1495,12 +1495,16 @@ sections.forEach(s => activeObserver.observe(s));
 /* ── VISIT COUNTER ── */
 async function countVisit() {
   try {
-    const res  = await fetch('https://api.countapi.xyz/hit/palmyqme/portfolio-visits');
+    const res  = await fetch('https://abacus.jasoncameron.dev/hit/palmyqme/portfolio-visits');
     const data = await res.json();
     const el   = document.getElementById('visit-count');
     if (el && data.value) {
       if (window.countUp && window.countUp.CountUp) {
         new window.countUp.CountUp('visit-count', data.value, { duration: 2 }).start();
+        // failsafe: if rAF was throttled and the animation stalled, force the final value
+        setTimeout(() => {
+          if (el.textContent !== data.value.toLocaleString()) el.textContent = data.value.toLocaleString();
+        }, 2200);
       } else {
         el.textContent = data.value.toLocaleString();
       }
