@@ -156,7 +156,7 @@ section{contain:layout style;}
 
 @media(max-width:640px){
   .glass-card{padding:1rem !important;}
-  section{padding-top:3rem !important;padding-bottom:3rem !important;}
+  section:not(#hero){padding-top:3rem !important;padding-bottom:3rem !important;}
   .custom-cursor{display:none !important;}
   h1{font-size:clamp(2rem,8vw,3rem) !important;line-height:1.2 !important;}
 }
@@ -238,7 +238,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
 </header>
 
 <!-- HERO -->
-<section id="hero" class="relative min-h-screen flex items-start md:items-center justify-center pb-16 overflow-hidden" style="padding-top:clamp(6rem,12vw,8rem)">
+<section id="hero" class="relative min-h-screen flex items-start md:items-center justify-center pt-28 md:pt-20 pb-16 overflow-hidden">
   <div class="orb-1 absolute w-96 h-96 rounded-full blur-[100px] -top-20 left-1/4 pointer-events-none" style="background:rgba(255,163,221,0.08);"></div>
   <div class="orb-2 absolute w-64 h-64 rounded-full blur-[80px] top-40 right-10 pointer-events-none" style="background:rgba(255,163,221,0.06);"></div>
   <div class="orb-3 absolute w-40 h-40 rounded-full blur-[60px] bottom-10 left-10 pointer-events-none" style="background:rgba(255,163,221,0.10);"></div>
@@ -1252,8 +1252,11 @@ document.querySelectorAll('button,.project-card,[data-contact-trigger],nav a').f
 /* ── TYPED.JS ── */
 new Typed('#typed-label', {
   strings: ['Business Analyst', 'Prompt Designer', 'BA × Tech Hybrid'],
-  typeSpeed: 60, backSpeed: 35, backDelay: 2000,
-  loop: true, showCursor: true, cursorChar: '|'
+  typeSpeed: 60,
+  backSpeed: 35,
+  backDelay: 2000,
+  loop: true,
+  cursorChar: '|'
 });
 
 /* ── GSAP ── */
