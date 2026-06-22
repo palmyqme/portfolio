@@ -175,6 +175,23 @@ section{contain:layout style;}
 img{max-width:100%;height:auto;}
 button,a{min-height:44px;}
 body{font-size:clamp(14px,2.5vw,16px);}
+
+/* Logo gimmick */
+.logo-gimmick{
+  background:linear-gradient(90deg,#FAFAFA 25%,#ffa3dd 45%,#ffcee9 52%,#FAFAFA 70%);
+  background-size:250% 100%;
+  background-position:100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  transition:background-position 0.7s ease, letter-spacing 0.3s ease;
+  display:inline-block;
+}
+.logo-gimmick:hover{
+  background-position:0%;
+  letter-spacing:0.04em;
+}
+.logo-gimmick::after{display:none !important;}
 </style>
 </head>
 <body class="bg-background text-on-surface">
@@ -193,7 +210,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
 <!-- FIXED NAV -->
 <header class="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-2xl border-b border-white/5">
   <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop flex items-center justify-between h-16 relative">
-    <a href="#" class="font-bold text-text-primary tracking-tighter text-xl" style="min-height:0;">Akarasiri C.</a>
+    <a href="#" class="logo-gimmick font-bold tracking-tighter text-xl" style="min-height:0;">Akarasiri C.</a>
     <!-- Desktop nav -->
     <nav class="hidden md:flex items-center gap-8">
       <a href="#experience" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">Experience</a>
@@ -222,7 +239,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
 </header>
 
 <!-- HERO -->
-<section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+<section id="hero" class="relative min-h-screen flex items-start md:items-center justify-center pt-28 md:pt-24 pb-16 overflow-hidden">
   <div class="orb-1 absolute w-96 h-96 rounded-full blur-[100px] -top-20 left-1/4 pointer-events-none" style="background:rgba(255,163,221,0.08);"></div>
   <div class="orb-2 absolute w-64 h-64 rounded-full blur-[80px] top-40 right-10 pointer-events-none" style="background:rgba(255,163,221,0.06);"></div>
   <div class="orb-3 absolute w-40 h-40 rounded-full blur-[60px] bottom-10 left-10 pointer-events-none" style="background:rgba(255,163,221,0.10);"></div>
