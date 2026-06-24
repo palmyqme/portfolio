@@ -43,6 +43,7 @@
 </script>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.1.0/typed.umd.js"></script>
@@ -227,6 +228,29 @@ body{font-size:clamp(14px,2.5vw,16px);}
   letter-spacing:0.04em;
 }
 .logo-gimmick::after{display:none !important;}
+
+/* ===== DEPTH FIELD — Parallax System ===== */
+#scroll-progress{will-change:width;}
+#starfield{opacity:0;transition:opacity 1s ease;}
+#starfield.loaded{opacity:0.6;}
+[data-depth]{will-change:transform;}
+
+/* Cursor depth trail (desktop only) */
+#cursor-dot,#cursor-ring,#cursor-trail-1,#cursor-trail-2,#cursor-trail-3{
+  position:fixed;top:0;left:0;border-radius:9999px;pointer-events:none;
+}
+#cursor-dot{z-index:9999;mix-blend-mode:difference;}
+#cursor-ring{z-index:9998;}
+
+@media(max-width:768px){
+  #starfield,#cursor-dot,#cursor-ring,
+  #cursor-trail-1,#cursor-trail-2,#cursor-trail-3{display:none !important;}
+  [data-depth]{will-change:auto;transform:none !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #starfield{display:none !important;}
+  [data-depth]{transform:none !important;}
+}
 </style>
 </head>
 <body class="bg-background text-on-surface">
@@ -240,7 +264,12 @@ body{font-size:clamp(14px,2.5vw,16px);}
 -->
 
 <div id="scroll-progress"></div>
-<div class="custom-cursor hidden md:block" id="cursor"></div>
+<!-- Depth-field cursor trail (desktop) -->
+<div id="cursor-dot"     class="hidden md:block w-2 h-2 bg-primary-container"></div>
+<div id="cursor-ring"    class="hidden md:block w-8 h-8 border" style="border-color:rgba(255,163,221,0.6);transform:translate(-50%,-50%);"></div>
+<div id="cursor-trail-1" class="hidden md:block w-5 h-5" style="background:rgba(255,163,221,0.30);transform:translate(-50%,-50%);"></div>
+<div id="cursor-trail-2" class="hidden md:block w-4 h-4" style="background:rgba(255,163,221,0.20);transform:translate(-50%,-50%);"></div>
+<div id="cursor-trail-3" class="hidden md:block w-2 h-2" style="background:rgba(255,163,221,0.10);transform:translate(-50%,-50%);"></div>
 
 <!-- FIXED NAV -->
 <header class="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-2xl border-b border-white/5">
@@ -280,14 +309,14 @@ body{font-size:clamp(14px,2.5vw,16px);}
   <div class="orb-3 absolute w-40 h-40 rounded-full blur-[60px] bottom-10 left-10 pointer-events-none" style="background:rgba(255,163,221,0.10);"></div>
 
   <div class="gsap-hero max-w-4xl mx-auto px-4 text-center relative z-10">
-    <div class="mb-4">
+    <div class="mb-4" data-depth="label">
       <span class="font-label-caps text-label-caps text-primary-container uppercase tracking-widest"><span id="typed-label"></span></span>
     </div>
-    <h1 class="font-headline-xl text-headline-xl md:text-[64px] text-[clamp(2rem,8vw,3rem)] text-text-primary leading-tight mb-2">
+    <h1 data-depth="h1" class="font-headline-xl text-headline-xl md:text-[64px] text-[clamp(2rem,8vw,3rem)] text-text-primary leading-tight mb-2">
       Akarasiri Chaowana<br/>
       <span class="text-primary-container">&lt;Palmy&gt;</span>
     </h1>
-    <div class="hero-bio max-w-xl mx-auto mt-6 space-y-4 text-center mb-8">
+    <div class="hero-bio max-w-xl mx-auto mt-6 space-y-4 text-center mb-8" data-depth="bio">
       <p class="text-body-lg leading-[1.8] text-on-surface-variant">
         Hello, I'm Akarasiri Chaowana, a Business Analyst experienced in
         analyzing business requirements, improving processes, and supporting
@@ -299,7 +328,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
         development teams.
       </p>
     </div>
-    <div class="flex flex-wrap gap-4 justify-center mb-8">
+    <div class="flex flex-wrap gap-4 justify-center mb-8" data-depth="buttons">
       <button data-contact-trigger class="flex items-center gap-2 bg-primary-container text-on-primary-container font-label-mono text-label-mono px-6 py-3 rounded-full primary-btn-glow transition-all">
         <span class="material-symbols-outlined text-base">mail</span> Contact Me
       </button>
@@ -307,7 +336,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
         <span class="material-symbols-outlined text-base">link</span> View LinkedIn
       </a>
     </div>
-    <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full border border-primary-container/30">
+    <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full border border-primary-container/30" data-depth="pill">
       <span class="current-role-dot w-2 h-2 rounded-full bg-primary-container inline-block"></span>
       <span class="font-label-mono text-label-mono text-on-surface-variant">Available for opportunities</span>
     </div>
@@ -1140,6 +1169,9 @@ body{font-size:clamp(14px,2.5vw,16px);}
 </div>
 <!-- ===== END COOKIE CONSENT BANNER ===== -->
 
+<!-- Depth-field starfield background -->
+<canvas id="starfield" class="fixed inset-0 pointer-events-none z-0" aria-hidden="true" style="mix-blend-mode:screen;"></canvas>
+
 <script>
 /* ── CURSOR ── */
 const cursor = document.getElementById('cursor');
@@ -1549,6 +1581,160 @@ async function countVisit() {
     showBanner(); // first visit — show banner
   }
   // if 'declined' — do nothing, stay hidden
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   DEPTH FIELD — Multi-layer Parallax System
+   Additive only. Respects prefers-reduced-motion + mobile.
+   ═══════════════════════════════════════════════════════════ */
+(function depthField() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isDesktop = window.innerWidth >= 769;
+  let lenis = null;
+  let scrollY = 0;
+
+  /* ── Lenis smooth scroll (desktop, motion-on) ── */
+  if (window.Lenis && isDesktop && !reduce) {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    lenis.on('scroll', ({ scroll }) => { scrollY = scroll; ScrollTrigger.update(); });
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+    // route anchor links + back-to-top through Lenis for buttery jumps
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -70 }); }
+      });
+    });
+    const bttEl = document.getElementById('back-to-top');
+    if (bttEl) bttEl.addEventListener('click', () => lenis.scrollTo(0));
+  }
+  const getScroll = () => lenis ? scrollY : window.scrollY;
+
+  /* ── LAYER 0: Starfield (5 depth planes) ── */
+  (function starfield() {
+    if (!isDesktop || reduce) return;
+    const canvas = document.getElementById('starfield');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const planes = [
+      { count: 40, speed: 0.03, size: 1,   opacity: 0.06, dots: [] },
+      { count: 30, speed: 0.07, size: 1.2, opacity: 0.09, dots: [] },
+      { count: 20, speed: 0.12, size: 1.5, opacity: 0.12, dots: [] },
+      { count: 12, speed: 0.18, size: 2,   opacity: 0.15, dots: [] },
+      { count:  6, speed: 0.25, size: 2.5, opacity: 0.20, dots: [] },
+    ];
+    function seed() {
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      planes.forEach(p => { p.dots = []; for (let i = 0; i < p.count; i++) p.dots.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height }); });
+    }
+    seed();
+    window.addEventListener('resize', seed);
+    function draw() {
+      const sy = getScroll();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      planes.forEach(p => {
+        ctx.fillStyle = `rgba(255,163,221,${p.opacity})`;
+        p.dots.forEach(d => {
+          const y = ((d.y - sy * p.speed) % canvas.height + canvas.height) % canvas.height;
+          ctx.beginPath(); ctx.arc(d.x, y, p.size, 0, Math.PI * 2); ctx.fill();
+        });
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+    setTimeout(() => canvas.classList.add('loaded'), 300);
+  })();
+
+  /* ── LAYER 2: Cursor depth trail ── */
+  (function cursorTrail() {
+    if (!isDesktop || reduce) return;
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    const t1 = document.getElementById('cursor-trail-1');
+    const t2 = document.getElementById('cursor-trail-2');
+    const t3 = document.getElementById('cursor-trail-3');
+    if (!dot) return;
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    gsap.ticker.add(() => {
+      gsap.set(dot, { x: mx, y: my, xPercent: -50, yPercent: -50 });
+      gsap.to(ring, { x: mx, y: my, xPercent: -50, yPercent: -50, duration: 0.12, ease: 'power2.out' });
+      gsap.to(t1,   { x: mx, y: my, xPercent: -50, yPercent: -50, duration: 0.22, ease: 'power2.out' });
+      gsap.to(t2,   { x: mx, y: my, xPercent: -50, yPercent: -50, duration: 0.35, ease: 'power2.out' });
+      gsap.to(t3,   { x: mx, y: my, xPercent: -50, yPercent: -50, duration: 0.50, ease: 'power2.out' });
+    });
+    document.querySelectorAll('a,button,.project-card,[data-contact-trigger]').forEach(el => {
+      el.addEventListener('mouseenter', () => gsap.to(ring, { scale: 2.4, duration: 0.2 }));
+      el.addEventListener('mouseleave', () => gsap.to(ring, { scale: 1, duration: 0.2 }));
+    });
+  })();
+
+  /* ── Scroll-driven layers (desktop only) ── */
+  if (reduce) return;
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 769px)', () => {
+
+    /* LAYER 1: Hero depth separation */
+    gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.5 } })
+      .to('[data-depth="label"]',   { y: -100, opacity: 0, ease: 'none' }, 0)
+      .to('[data-depth="h1"]',      { y: -70,  ease: 'none' }, 0)
+      .to('[data-depth="bio"]',     { y: -40,  opacity: 0.35, ease: 'none' }, 0)
+      .to('[data-depth="buttons"]', { y: -20,  ease: 'none' }, 0)
+      .to('[data-depth="pill"]',    { y: 25,   opacity: 0, ease: 'none' }, 0);
+
+    /* LAYER 3: Experience — ambient drift + traveling dot (additive) */
+    gsap.to('#experience .ambient-line', { y: -80, ease: 'none',
+      scrollTrigger: { trigger: '#experience', start: 'top bottom', end: 'bottom top', scrub: 2 } });
+
+    const line = document.querySelector('#experience .timeline-line');
+    if (line) {
+      const traveler = document.createElement('div');
+      traveler.style.cssText = 'position:absolute;left:-5px;top:0;width:10px;height:10px;border-radius:50%;background:#ffa3dd;box-shadow:0 0 12px #ffa3dd,0 0 24px rgba(255,163,221,0.4);pointer-events:none;z-index:10;';
+      line.appendChild(traveler);
+      gsap.to(traveler, { top: '100%', ease: 'none',
+        scrollTrigger: { trigger: '#experience', start: 'top 60%', end: 'bottom 60%', scrub: 2 } });
+    }
+
+    /* LAYER 4: Projects — square drift + in-card image parallax (additive) */
+    document.querySelectorAll('#work .ambient-square').forEach((sq, i) => {
+      gsap.to(sq, { y: -((i % 3) * 25 + 20), ease: 'none',
+        scrollTrigger: { trigger: '#work', start: 'top bottom', end: 'bottom top', scrub: 1.5 } });
+    });
+    document.querySelectorAll('.project-card img').forEach(img => {
+      gsap.fromTo(img, { y: -14 }, { y: 14, ease: 'none',
+        scrollTrigger: { trigger: img.closest('.project-card'), start: 'top bottom', end: 'bottom top', scrub: 1 } });
+    });
+
+    /* LAYER 5: Skills — hex orbital drift (additive) */
+    document.querySelectorAll('#skills .ambient-hex').forEach((hex, i) => {
+      gsap.to(hex, { y: [-40, -65, -90][i % 3], x: [10, -15, 8][i % 3], ease: 'none',
+        scrollTrigger: { trigger: '#skills', start: 'top bottom', end: 'bottom top', scrub: 2 } });
+    });
+
+    /* LAYER 6: AI — particle canvas breathe (additive, content untouched) */
+    const aiCanvas = document.getElementById('ai-particles');
+    if (aiCanvas) {
+      gsap.fromTo(aiCanvas, { scale: 1.12 }, { scale: 1, ease: 'none',
+        scrollTrigger: { trigger: '#ai-skills', start: 'top bottom', end: 'top top', scrub: 1.5 } });
+    }
+
+    /* LAYER 7: About — music notes float (additive) */
+    gsap.to('#about .ambient-note', { y: -120, ease: 'none',
+      scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+
+    /* LAYER 8: Contact — diamond counter-parallax (additive) */
+    document.querySelectorAll('#contact .ambient-diamond').forEach((d, i) => {
+      gsap.to(d, { y: -[30, 55, 75][i % 3], ease: 'none',
+        scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'bottom top', scrub: 2 } });
+    });
+
+    ScrollTrigger.refresh();
+  });
 })();
 </script>
 </body>
