@@ -253,6 +253,9 @@ body{font-size:clamp(14px,2.5vw,16px);}
 
 /* ===== SINGULARITY — escalated 3D layer ===== */
 .split-char{display:inline-block;will-change:transform,opacity;}
+/* Cards driven by scrubbed 3D: drop transform from their transition so it doesn't smear
+   (keep hover border/shadow transitions). Applied via JS on desktop only. */
+.glass-card.is-parallax{transition:border-color 0.5s cubic-bezier(0.4,0,0.2,1),box-shadow 0.5s cubic-bezier(0.4,0,0.2,1) !important;will-change:transform;}
 #hero .gsap-hero{transform-style:preserve-3d;}
 #hero-h1{perspective:800px;}
 #depth-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
@@ -1400,57 +1403,21 @@ gsap.from('#hero .gsap-hero > *:not(#hero-h1)', {
 gsap.to('#hero .orb-1', { y: -40, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
 gsap.to('#hero .orb-2', { y: -25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
 
-// Timeline line draw
-gsap.from('#experience .timeline-line', {
-  scaleY: 0, transformOrigin: 'top center', duration: 1.5, ease: 'power2.out',
-  scrollTrigger: { trigger: '#experience', start: 'top 80%', once: true }
-});
-gsap.from('#experience .timeline-entry', {
-  opacity: 0, x: -50, duration: 0.8, stagger: 0.25, ease: 'power2.out',
-  scrollTrigger: { trigger: '#experience', start: 'top 70%', once: true }
+// Timeline line draw — continuous scrub (was once:true)
+gsap.fromTo('#experience .timeline-line', { scaleY: 0 }, {
+  scaleY: 1, transformOrigin: 'top center', ease: 'none',
+  scrollTrigger: { trigger: '#experience', start: 'top 75%', end: 'bottom 60%', scrub: 1 }
 });
 
-// Project cards
-const projectTween = gsap.from('.project-card', {
-  opacity: 0, y: 60, duration: 0.7, stagger: 0.12, ease: 'power2.out',
-  scrollTrigger: { trigger: '#work', start: 'top bottom', once: true, invalidateOnRefresh: true }
-});
-const revealCards = () => {
-  gsap.set('.project-card', { clearProps: 'opacity,transform,translate,rotate,scale' });
-};
-const checkStuck = () => {
-  const work = document.getElementById('work');
-  if (!work) return;
-  const onScreen = work.getBoundingClientRect().top < window.innerHeight;
-  const hidden = [...document.querySelectorAll('.project-card')].some(c => parseFloat(getComputedStyle(c).opacity) < 0.5);
-  if (onScreen && hidden) {
-    projectTween.scrollTrigger && projectTween.scrollTrigger.kill();
-    projectTween.kill();
-    revealCards();
-    window.removeEventListener('scroll', checkStuck);
-  }
-};
-window.addEventListener('scroll', checkStuck, { passive: true });
-setTimeout(checkStuck, 2500);
-
-// Section heading reveal
+// Section heading reveal — continuous scrub, y-only so it stays inside the overflow:hidden wrap
 gsap.utils.toArray('.section-heading-wrap').forEach(el => {
-  gsap.from(el.querySelector('h2'), {
-    y: '100%', opacity: 0, duration: 0.8, ease: 'power3.out',
-    scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+  gsap.fromTo(el.querySelector('h2'), { yPercent: 100, opacity: 0 }, {
+    yPercent: 0, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 55%', scrub: 1 }
   });
 });
-
-// Skill chips wave
-const chipTween = gsap.from('.skill-chip', {
-  opacity: 0, scale: 0.7, duration: 0.4, stagger: 0.05, ease: 'back.out(1.7)',
-  scrollTrigger: { trigger: '#skills', start: 'top bottom', once: true, invalidateOnRefresh: true }
-});
-setTimeout(() => {
-  document.querySelectorAll('.skill-chip').forEach(c => {
-    if (parseFloat(getComputedStyle(c).opacity) < 0.5) gsap.set(c, { clearProps: 'opacity,transform' });
-  });
-}, 2000);
+// Timeline-entry / project-card / skill-chip reveals are now handled as heavy 3D
+// (desktop) or simple fades (mobile) inside the depthField matchMedia block below.
 
 // ScrollTrigger refresh
 const refresh = () => ScrollTrigger.refresh();
@@ -1781,7 +1748,7 @@ async function countVisit() {
       });
     });
 
-    /* LAYER 3: Experience — ambient drift + traveling dot (additive) */
+    /* LAYER 3: Experience — ambient drift + traveling dot + alternating 3D fly-in */
     gsap.to('#experience .ambient-line', { y: -80, ease: 'none',
       scrollTrigger: { trigger: '#experience', start: 'top bottom', end: 'bottom top', scrub: 2 } });
 
@@ -1793,29 +1760,42 @@ async function countVisit() {
       gsap.to(traveler, { top: '100%', ease: 'none',
         scrollTrigger: { trigger: '#experience', start: 'top 60%', end: 'bottom 60%', scrub: 2 } });
     }
+    // 3D entrance on the .timeline-entry WRAPPER (no CSS transition → smear-free).
+    // Opacity is owned by the inner .glass-card.reveal-hidden observer; bullets slide in (transform).
+    document.querySelectorAll('#experience .timeline-entry').forEach((entry, i) => {
+      const left = i % 2 === 0;
+      gsap.fromTo(entry,
+        { x: left ? -200 : 200, rotationY: left ? -38 : 38, z: -380, scale: 0.72, transformPerspective: 1200 },
+        { x: 0, rotationY: 0, z: 0, scale: 1, ease: 'none',
+          scrollTrigger: { trigger: entry, start: 'top 92%', end: 'top 38%', scrub: 1.2 } });
+      entry.querySelectorAll('li, p').forEach((b, j) => {
+        gsap.fromTo(b, { x: left ? -45 : 45 }, { x: 0, ease: 'none',
+          scrollTrigger: { trigger: entry, start: 'top 85%', end: 'top 32%', scrub: 1.4 + j * 0.08 } });
+      });
+    });
 
-    /* LAYER 4: Projects — square drift + in-card image parallax (additive) */
+    /* LAYER 4: Projects — square drift + image parallax + 3D fan-up entrance */
     document.querySelectorAll('#work .ambient-square').forEach((sq, i) => {
-      gsap.to(sq, { y: -((i % 3) * 25 + 20), ease: 'none',
+      gsap.to(sq, { y: -((i % 3) * 30 + 25), x: [25, -30, 18][i % 3], rotation: `+=${60 + i * 15}`, ease: 'none',
         scrollTrigger: { trigger: '#work', start: 'top bottom', end: 'bottom top', scrub: 1.5 } });
     });
     document.querySelectorAll('.project-card img').forEach(img => {
-      gsap.fromTo(img, { y: -14 }, { y: 14, ease: 'none',
+      gsap.fromTo(img, { y: -18 }, { y: 18, ease: 'none',
         scrollTrigger: { trigger: img.closest('.project-card'), start: 'top bottom', end: 'bottom top', scrub: 1 } });
     });
-    // Card Vault — deck un-fans in 3D as section enters (transform-only; opacity owned by reveal system)
-    const vaultCards = document.querySelectorAll('#work .project-card');
-    vaultCards.forEach((card, i) => {
-      const mid = (vaultCards.length - 1) / 2;
+    const projCards = document.querySelectorAll('#work .project-card');
+    projCards.forEach((card, i) => {
+      card.classList.add('is-parallax');
+      const mid = (projCards.length - 1) / 2;
       gsap.fromTo(card,
-        { rotationY: (i - mid) * 16, rotationX: 8, z: -i * 120, transformPerspective: 1200, transformOrigin: '50% 50%' },
-        { rotationY: 0, rotationX: 0, z: 0, ease: 'none',
-          scrollTrigger: { trigger: '#work', start: 'top 78%', end: 'top 22%', scrub: 1.8 } });
+        { y: 110 + i * 15, z: -160 - i * 90, rotationY: (i - mid) * 14, rotationX: 8, scale: 0.8, opacity: 0, transformPerspective: 1200, transformOrigin: '50% 50%' },
+        { y: 0, z: 0, rotationY: 0, rotationX: 0, scale: 1, opacity: 1, ease: 'none',
+          scrollTrigger: { trigger: card, start: 'top 92%', end: 'top 40%', scrub: 1.3 } });
     });
 
-    /* LAYER 5: Skills — hex orbital drift + grid zoom-in from deep space (transform-only) */
+    /* LAYER 5: Skills — hex orbital drift + grid zoom + 8-direction compass chip fly-in */
     document.querySelectorAll('#skills .ambient-hex').forEach((hex, i) => {
-      gsap.to(hex, { y: [-40, -65, -90][i % 3], x: [10, -15, 8][i % 3], rotationZ: 50, ease: 'none',
+      gsap.to(hex, { y: [-60, -100, -140][i % 3], x: [20, -30, 15][i % 3], rotationZ: 90, ease: 'none',
         scrollTrigger: { trigger: '#skills', start: 'top bottom', end: 'bottom top', scrub: 2 } });
     });
     const skillsGrid = document.querySelector('#skills .grid');
@@ -1824,31 +1804,62 @@ async function countVisit() {
         { scale: 1, z: 0, rotationX: 0, ease: 'none',
           scrollTrigger: { trigger: '#skills', start: 'top 88%', end: 'top 30%', scrub: 1.8 } });
     }
+    const compass = [{x:-220,y:-130},{x:0,y:-220},{x:220,y:-130},{x:220,y:0},{x:220,y:130},{x:0,y:220},{x:-220,y:130},{x:-220,y:0}];
+    document.querySelectorAll('#skills .skill-chip').forEach((chip, i) => {
+      const d = compass[i % 8];
+      gsap.fromTo(chip,
+        { x: d.x, y: d.y, opacity: 0, scale: 0.4, rotationZ: (Math.random() - 0.5) * 50 },
+        { x: 0, y: 0, opacity: 1, scale: 1, rotationZ: 0, ease: 'none',
+          scrollTrigger: { trigger: '#skills', start: 'top 78%', end: 'top 25%', scrub: 1.2 } });
+    });
 
-    /* LAYER 6: AI — particle canvas breathe + grid zoom from deep space (transform-only) */
+    /* LAYER 6: AI — 360° "neural storm" on cards + particle canvas breathe */
     const aiCanvas = document.getElementById('ai-particles');
     if (aiCanvas) {
-      gsap.fromTo(aiCanvas, { scale: 1.18, opacity: 0 }, { scale: 1, opacity: 1, ease: 'none',
+      gsap.fromTo(aiCanvas, { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, ease: 'none',
         scrollTrigger: { trigger: '#ai-skills', start: 'top bottom', end: 'top 25%', scrub: 1.5 } });
     }
-    const aiGrid = document.querySelector('#ai-skills .grid');
-    if (aiGrid) {
-      gsap.fromTo(aiGrid, { scale: 0.68, z: -520, rotationX: 14, transformPerspective: 1200 },
-        { scale: 1, z: 0, rotationX: 0, ease: 'none',
-          scrollTrigger: { trigger: '#ai-skills', start: 'top 82%', end: 'top 22%', scrub: 1.8 } });
+    const aiCards = document.querySelectorAll('#ai-skills .glass-card');
+    const aiStep = 360 / Math.max(aiCards.length, 1);
+    aiCards.forEach((card, i) => {
+      card.classList.add('is-parallax');
+      const ang = aiStep * i * Math.PI / 180;
+      gsap.fromTo(card,
+        { x: Math.cos(ang) * 600, y: Math.sin(ang) * 380, rotationZ: (Math.random() - 0.5) * 160, rotationY: (Math.random() - 0.5) * 70, scale: 0.2, transformPerspective: 1200 },
+        { x: 0, y: 0, rotationZ: 0, rotationY: 0, scale: 1, ease: 'none',
+          scrollTrigger: { trigger: '#ai-skills', start: 'top 82%', end: 'top 18%', scrub: 1.5 } });
+    });
+
+    /* LAYER 7: About — dual-column convergence + music-note blast */
+    gsap.to('#about .ambient-note', { y: -200, opacity: 0, scale: 1.6, ease: 'none',
+      scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+    const aboutGrid = document.querySelector('#about .grid');
+    if (aboutGrid) {
+      const cols = aboutGrid.children;            // [0]=left div, [1]=right a.glass-card
+      if (cols[0]) gsap.fromTo(cols[0], { x: -240, rotationY: -38, z: -360, transformPerspective: 1200 },
+        { x: 0, rotationY: 0, z: 0, ease: 'none',
+          scrollTrigger: { trigger: '#about', start: 'top 85%', end: 'top 25%', scrub: 1.5 } });
+      if (cols[1]) { cols[1].classList.add('is-parallax');
+        gsap.fromTo(cols[1], { x: 240, rotationY: 38, z: -360, transformPerspective: 1200 },
+          { x: 0, rotationY: 0, z: 0, ease: 'none',
+            scrollTrigger: { trigger: '#about', start: 'top 85%', end: 'top 25%', scrub: 1.5 } }); }
     }
 
-    /* LAYER 7: About — music notes float (additive) */
-    gsap.to('#about .ambient-note', { y: -120, ease: 'none',
-      scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 } });
-
-    /* LAYER 8: Contact — diamond counter-parallax + magnetic mouse gravity on cards */
+    /* LAYER 8: Contact — diamond drift + 3D card entrance + magnetic gravity */
     document.querySelectorAll('#contact .ambient-diamond').forEach((d, i) => {
-      gsap.to(d, { y: -[30, 55, 75][i % 3], ease: 'none',
+      gsap.to(d, { y: -[40, 70, 95][i % 3], rotation: '+=45', ease: 'none',
         scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'bottom top', scrub: 2 } });
     });
     const contactSection = document.getElementById('contact');
     const magnetCards = contactSection ? contactSection.querySelectorAll('a.glass-card') : [];
+    // Entrance uses z/scale/opacity/rotationX only — NO x/y — so it never fights the mouse gravity (x/y).
+    magnetCards.forEach(card => {
+      card.classList.add('is-parallax');
+      gsap.fromTo(card,
+        { z: -320, scale: 0.78, opacity: 0, rotationX: 22, transformPerspective: 1200 },
+        { z: 0, scale: 1, opacity: 1, rotationX: 0, ease: 'none',
+          scrollTrigger: { trigger: '#contact', start: 'top 82%', end: 'top 38%', scrub: 1.4 } });
+    });
     if (magnetCards.length) {
       contactSection.addEventListener('mousemove', e => {
         const r = contactSection.getBoundingClientRect();
@@ -1866,6 +1877,34 @@ async function countVisit() {
 
     ScrollTrigger.refresh();
   });
+
+  /* Mobile / coarse pointers — simple fades only, no 3D (matchMedia reverts desktop tweens) */
+  mm.add('(max-width: 768px)', () => {
+    gsap.from('#work .project-card', { opacity: 0, y: 40, stagger: 0.12, duration: 0.6, ease: 'power2.out',
+      scrollTrigger: { trigger: '#work', start: 'top 80%', once: true } });
+    gsap.from('#skills .skill-chip', { opacity: 0, y: 20, stagger: 0.04, duration: 0.4, ease: 'power2.out',
+      scrollTrigger: { trigger: '#skills', start: 'top 80%', once: true } });
+    gsap.from('#experience .timeline-entry', { opacity: 0, x: -24, stagger: 0.15, duration: 0.6, ease: 'power2.out',
+      scrollTrigger: { trigger: '#experience', start: 'top 80%', once: true } });
+  });
+
+  /* Stuck-content failsafe — viewport-agnostic (desktop + mobile). If anything scrolled past is
+     still hidden (frozen ticker / unfired observer), force it visible. gsap.set is synchronous;
+     killing the CSS transition first avoids a frozen opacity:0→1 transition. Generalizes the old
+     project-card watchdog and also hardens the pre-existing .reveal-hidden cards everywhere. */
+  const heavy = document.querySelectorAll('#work .project-card, #skills .skill-chip, #contact a.glass-card, .reveal-hidden');
+  const unstick = () => {
+    heavy.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.6 && parseFloat(getComputedStyle(el).opacity) < 0.5) {
+        el.style.transition = 'none';
+        el.classList.add('reveal-visible');
+        gsap.set(el, { opacity: 1, clearProps: 'transform' });
+      }
+    });
+  };
+  window.addEventListener('scroll', unstick, { passive: true });
+  setTimeout(unstick, 2600);
 })();
 </script>
 </body>
