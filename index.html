@@ -268,6 +268,49 @@ body{font-size:clamp(14px,2.5vw,16px);}
   .split-char{transform:none !important;}
   #hero .gsap-hero{transform:none !important;}
 }
+
+/* ===== PROJECT EXPERIENCE — auto-loop parallax marquee ===== */
+.pe-marquee{position:relative;width:100%;overflow:hidden;padding:2.5rem 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
+/* back parallax layer — giant faint brand words, half speed */
+.pe-bg-track{position:absolute;inset:0;display:flex;align-items:center;gap:4rem;width:max-content;
+  animation:pe-scroll 90s linear infinite;pointer-events:none;z-index:0;}
+.pe-bg-word{font-family:'Source Code Pro',monospace;font-size:clamp(4rem,11vw,9rem);font-weight:800;
+  letter-spacing:-0.03em;line-height:1;white-space:nowrap;color:#ffa3dd;opacity:0.045;}
+/* front layer — project cards, full speed */
+.pe-track{position:relative;z-index:1;display:flex;gap:1.5rem;width:max-content;
+  animation:pe-scroll 46s linear infinite;will-change:transform;}
+@keyframes pe-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.pe-marquee:hover .pe-track,.pe-marquee:hover .pe-bg-track{animation-play-state:paused;}
+
+.pe-card{position:relative;flex:0 0 auto;width:290px;min-height:186px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:flex-start;
+  background:rgba(32,31,31,0.92);border:1px solid #353534;border-radius:0.75rem;padding:1.5rem;
+  transition:border-color .4s cubic-bezier(0.4,0,0.2,1),transform .4s cubic-bezier(0.16,1,0.3,1),box-shadow .4s;}
+.pe-card:hover{border-color:#ffa3dd;transform:translateY(-6px);box-shadow:0 14px 44px -14px rgba(255,163,221,0.4);}
+.pe-ghost{position:absolute;right:0.4rem;bottom:-1.4rem;font-size:7rem;font-weight:800;line-height:1;
+  color:rgba(255,163,221,0.07);pointer-events:none;user-select:none;transition:transform .6s cubic-bezier(0.16,1,0.3,1);}
+.pe-card:hover .pe-ghost{transform:translateY(-8px) scale(1.06);color:rgba(255,163,221,0.11);}
+.pe-icon{font-size:1.75rem;color:#ffa3dd;margin-bottom:0.9rem;}
+.pe-tag{display:inline-block;font-size:11px;letter-spacing:0.06em;font-weight:600;
+  border:1px solid rgba(255,163,221,0.4);background:rgba(255,163,221,0.09);color:#ffcee9;
+  padding:3px 11px;border-radius:9999px;margin-bottom:0.7rem;}
+.pe-tag.benefits{border-color:rgba(129,201,149,0.4);background:rgba(129,201,149,0.10);color:#a6e0b8;}
+.pe-tag.ecom{border-color:rgba(176,140,255,0.45);background:rgba(176,140,255,0.11);color:#cbb2ff;}
+.pe-name{font-size:1.3rem;font-weight:700;line-height:1.25;color:#FAFAFA;position:relative;z-index:1;}
+.pe-meta{margin-top:auto;padding-top:0.8rem;font-size:11px;color:rgba(255,163,221,0.6);}
+
+@media(max-width:640px){
+  .pe-marquee{padding:1.5rem 0;}
+  .pe-card{width:250px;min-height:168px;padding:1.25rem;}
+  .pe-ghost{font-size:5.5rem;bottom:-1rem;}
+  .pe-track{animation-duration:38s;}
+}
+@media(prefers-reduced-motion:reduce){
+  .pe-track,.pe-bg-track{animation:none;}
+  .pe-marquee{overflow-x:auto;}
+}
 </style>
 </head>
 <body class="bg-background text-on-surface">
@@ -398,6 +441,43 @@ body{font-size:clamp(14px,2.5vw,16px);}
     </div>
   </div>
 </div>
+
+<!-- PROJECT EXPERIENCE — auto-loop parallax marquee -->
+<section id="project-experience" class="relative py-section-gap overflow-hidden">
+  <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop relative z-10">
+    <div class="section-heading-wrap mb-2">
+      <h2 class="font-headline-lg text-headline-lg text-text-primary">Project Experience</h2>
+    </div>
+    <div class="w-20 h-1 bg-primary-container rounded-full mb-3"></div>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-10">Loyalty &amp; reward platforms I've delivered as Business Analyst.</p>
+  </div>
+
+  <div class="pe-marquee group" role="list" aria-label="Project experience">
+    <!-- back parallax layer: giant brand words, slower -->
+    <div class="pe-bg-track" aria-hidden="true">
+      <span class="pe-bg-word">SINGHA</span><span class="pe-bg-word">AIS</span><span class="pe-bg-word">TOLLWAY</span><span class="pe-bg-word">DUTCHMILL</span><span class="pe-bg-word">G-BEAT</span><span class="pe-bg-word">MALI</span>
+      <span class="pe-bg-word">SINGHA</span><span class="pe-bg-word">AIS</span><span class="pe-bg-word">TOLLWAY</span><span class="pe-bg-word">DUTCHMILL</span><span class="pe-bg-word">G-BEAT</span><span class="pe-bg-word">MALI</span>
+    </div>
+    <!-- front layer: project cards, faster (duplicated for seamless loop) -->
+    <div class="pe-track">
+      <article class="pe-card" role="listitem"><span class="pe-ghost">01</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Singha Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">02</span><span class="material-symbols-outlined pe-icon">diversity_3</span><span class="pe-tag benefits">Employee Flexible Benefits</span><h3 class="pe-name">AIS Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">03</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">ปุ๋ยตราหัววัวคันไถ</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">04</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Tollway</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">05</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Dutchmill Point Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">06</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">G-Beat ดีด Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">07</span><span class="material-symbols-outlined pe-icon">shopping_bag</span><span class="pe-tag ecom">Loyalty &amp; E-Commerce</span><h3 class="pe-name">Mali Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <!-- duplicate set for seamless infinite loop -->
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">01</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Singha Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">02</span><span class="material-symbols-outlined pe-icon">diversity_3</span><span class="pe-tag benefits">Employee Flexible Benefits</span><h3 class="pe-name">AIS Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">03</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">ปุ๋ยตราหัววัวคันไถ</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">04</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Tollway</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">05</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Dutchmill Point Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">06</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">G-Beat ดีด Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">07</span><span class="material-symbols-outlined pe-icon">shopping_bag</span><span class="pe-tag ecom">Loyalty &amp; E-Commerce</span><h3 class="pe-name">Mali Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+    </div>
+  </div>
+</section>
 
 <!-- EXPERIENCE / CAREER PATH -->
 <section id="experience" class="relative py-section-gap overflow-hidden">
