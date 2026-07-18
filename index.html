@@ -296,7 +296,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
     <!-- Desktop nav -->
     <nav class="hidden md:flex items-center gap-8">
       <a href="#experience" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">Experience</a>
-      <a href="#work" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">Work</a>
+      <a href="#work" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors" style="display:none;">Work</a>
       <a href="#skills" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">Skills</a>
       <a href="#ai-skills" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">AI</a>
       <a href="#contact" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">Contact</a>
@@ -312,7 +312,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
   <!-- Mobile menu -->
   <div id="mobile-menu">
     <a href="#experience" class="mobile-nav-link">Experience</a>
-    <a href="#work" class="mobile-nav-link">Work</a>
+    <a href="#work" class="mobile-nav-link" style="display:none;">Work</a>
     <a href="#skills" class="mobile-nav-link">Skills</a>
     <a href="#ai-skills" class="mobile-nav-link">AI</a>
     <a href="#contact" class="mobile-nav-link">Contact</a>
@@ -516,8 +516,8 @@ body{font-size:clamp(14px,2.5vw,16px);}
   </div>
 </section>
 
-<!-- WORK / SELECTED PROJECTS -->
-<section id="work" class="relative py-section-gap">
+<!-- WORK / SELECTED PROJECTS (hidden) -->
+<section id="work" class="relative py-section-gap" style="display:none;">
   <div class="ambient-shapes absolute inset-0 pointer-events-none z-0" aria-hidden="true">
     <div class="ambient-square" style="width:60px;height:60px;top:10%;left:5%;transform:rotate(20deg);"></div>
     <div class="ambient-square" style="width:40px;height:40px;top:60%;right:8%;transform:rotate(45deg);"></div>
@@ -726,6 +726,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
             <p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Databases</p>
             <div class="flex flex-wrap gap-2">
               <span class="skill-tile stack-chip">PostgreSQL / MySQL</span>
+              <span class="skill-tile stack-chip">MongoDB</span>
               <span class="skill-tile stack-chip">Microsoft Azure Storage</span>
             </div>
           </div>
