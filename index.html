@@ -271,8 +271,13 @@ body{font-size:clamp(14px,2.5vw,16px);}
 
 /* ===== PROJECT EXPERIENCE — auto-loop parallax marquee ===== */
 .pe-marquee{position:relative;width:100%;overflow:hidden;padding:2.5rem 0;
+  cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
           mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
+.pe-marquee.grabbing{cursor:grabbing;}
+/* while dragging, suppress per-card hover lift so it doesn't fight the drag */
+.pe-marquee.grabbing .pe-card{transform:none !important;box-shadow:none;border-color:#353534;}
+.pe-marquee.grabbing .pe-card .pe-ghost{transform:none;}
 /* back parallax layer — giant faint brand words, half speed */
 .pe-bg-track{position:absolute;inset:0;display:flex;align-items:center;gap:4rem;width:max-content;
   animation:pe-scroll 90s linear infinite;pointer-events:none;z-index:0;}
@@ -1629,6 +1634,77 @@ sections.forEach(s => activeObserver.observe(s));
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
+})();
+
+/* ── PROJECT EXPERIENCE — drag-to-slide + auto-resume loop ── */
+(function peSlider(){
+  const marquee = document.querySelector('.pe-marquee');
+  if (!marquee) return;
+  const track = marquee.querySelector('.pe-track');
+  const bg    = marquee.querySelector('.pe-bg-track');
+  if (!track) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // JS drives the loop now — disable the CSS keyframes (kept as a no-JS fallback)
+  track.style.animation = 'none';
+  if (bg) bg.style.animation = 'none';
+  marquee.style.overflowX = 'hidden';
+
+  let frontLoop = 1, bgLoop = 1;
+  function measure(){
+    const c = track.children;
+    frontLoop = (c.length > 7 ? c[7].offsetLeft - c[0].offsetLeft : track.scrollWidth / 2) || 1;
+    if (bg) { const b = bg.children; bgLoop = (b.length > 6 ? b[6].offsetLeft - b[0].offsetLeft : bg.scrollWidth / 2) || 1; }
+  }
+  measure();
+  window.addEventListener('resize', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+  const SPEED = 0.5;                 // auto px/frame (~30px/s)
+  let offset = 0, mode = 'auto', velocity = 0, resumeTimer = null;
+  let startX = 0, startOffset = 0, lastX = 0;
+
+  const norm = (v, m) => ((v % m) + m) % m;
+  function apply(){
+    track.style.transform = 'translateX(' + (-norm(offset, frontLoop)) + 'px)';
+    if (bg) bg.style.transform = 'translateX(' + (-norm(offset * 0.5, bgLoop)) + 'px)';
+  }
+  function frame(){
+    if (mode === 'auto') { if (!reduce) offset += SPEED; }
+    else if (mode === 'inertia') {
+      offset += velocity; velocity *= 0.93;
+      if (Math.abs(velocity) < 0.06) mode = 'auto';
+    }
+    apply();
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // resume the auto-loop a beat after the user stops interacting
+  function scheduleResume(){ clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { if (mode !== 'drag') mode = 'auto'; }, 1400); }
+
+  marquee.addEventListener('pointerdown', e => {
+    mode = 'drag'; velocity = 0; clearTimeout(resumeTimer);
+    startX = lastX = e.clientX; startOffset = offset;
+    marquee.classList.add('grabbing');
+    try { marquee.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  marquee.addEventListener('pointermove', e => {
+    if (mode !== 'drag') return;
+    offset = startOffset - (e.clientX - startX);
+    velocity = lastX - e.clientX; lastX = e.clientX;
+    apply();
+  });
+  function endDrag(){
+    if (mode !== 'drag') return;
+    marquee.classList.remove('grabbing');
+    mode = (Math.abs(velocity) > 0.6) ? 'inertia' : 'auto';  // light flick momentum
+    scheduleResume();                                        // then the loop returns
+  }
+  marquee.addEventListener('pointerup', endDrag);
+  marquee.addEventListener('pointercancel', endDrag);
+  window.addEventListener('pointerup', endDrag);             // safety if capture is lost
+  marquee.addEventListener('dragstart', e => e.preventDefault());
 })();
 
 /* ── VISIT COUNTER ── */
