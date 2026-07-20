@@ -280,12 +280,12 @@ body{font-size:clamp(14px,2.5vw,16px);}
 .pe-marquee.grabbing .pe-card .pe-ghost{transform:none;}
 /* back parallax layer — giant faint brand words, half speed */
 .pe-bg-track{position:absolute;inset:0;display:flex;align-items:center;gap:4rem;width:max-content;
-  animation:pe-scroll 53s linear infinite;pointer-events:none;z-index:0;}
+  animation:pe-scroll 86s linear infinite;pointer-events:none;z-index:0;}
 .pe-bg-word{font-family:'Source Code Pro',monospace;font-size:clamp(4rem,11vw,9rem);font-weight:800;
   letter-spacing:-0.03em;line-height:1;white-space:nowrap;color:#ffa3dd;opacity:0.045;}
 /* front layer — project cards, full speed */
 .pe-track{position:relative;z-index:1;display:flex;gap:1.5rem;width:max-content;
-  animation:pe-scroll 27s linear infinite;will-change:transform;}
+  animation:pe-scroll 44s linear infinite;will-change:transform;}
 @keyframes pe-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 .pe-marquee:hover .pe-track,.pe-marquee:hover .pe-bg-track{animation-play-state:paused;}
 
@@ -310,7 +310,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
   .pe-marquee{padding:1.5rem 0;}
   .pe-card{width:250px;min-height:168px;padding:1.25rem;}
   .pe-ghost{font-size:5.5rem;bottom:-1rem;}
-  .pe-track{animation-duration:22s;}
+  .pe-track{animation-duration:36s;}
 }
 @media(prefers-reduced-motion:reduce){
   .pe-track,.pe-bg-track{animation:none;}
@@ -421,8 +421,8 @@ body{font-size:clamp(14px,2.5vw,16px);}
 <div class="border-y border-outline-variant/30 py-8" style="background:rgba(14,14,14,0.5);backdrop-filter:blur(8px);">
   <div class="max-w-container-max mx-auto px-4 flex flex-wrap justify-center gap-8 md:gap-16">
     <div class="text-center">
-      <p id="stat-projects" class="font-headline-lg text-headline-lg text-primary-container">7</p>
-      <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mt-1">Projects on Hand</p>
+      <p id="stat-projects" class="font-headline-lg text-headline-lg text-primary-container">8</p>
+      <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mt-1">Projects Delivered</p>
     </div>
     <div class="hidden md:block w-px bg-outline-variant/40"></div>
     <div class="text-center">
@@ -460,8 +460,8 @@ body{font-size:clamp(14px,2.5vw,16px);}
   <div class="pe-marquee group" role="list" aria-label="Project experience">
     <!-- back parallax layer: giant brand words, slower -->
     <div class="pe-bg-track" aria-hidden="true">
-      <span class="pe-bg-word">SINGHA</span><span class="pe-bg-word">AIS</span><span class="pe-bg-word">TOLLWAY</span><span class="pe-bg-word">DUTCHMILL</span><span class="pe-bg-word">G-BEAT</span><span class="pe-bg-word">MALI</span>
-      <span class="pe-bg-word">SINGHA</span><span class="pe-bg-word">AIS</span><span class="pe-bg-word">TOLLWAY</span><span class="pe-bg-word">DUTCHMILL</span><span class="pe-bg-word">G-BEAT</span><span class="pe-bg-word">MALI</span>
+      <span class="pe-bg-word">SINGHA</span><span class="pe-bg-word">AIS</span><span class="pe-bg-word">TOLLWAY</span><span class="pe-bg-word">DUTCHMILL</span><span class="pe-bg-word">G-BEAT</span><span class="pe-bg-word">MALI</span><span class="pe-bg-word">SALESFORCE</span>
+      <span class="pe-bg-word">SINGHA</span><span class="pe-bg-word">AIS</span><span class="pe-bg-word">TOLLWAY</span><span class="pe-bg-word">DUTCHMILL</span><span class="pe-bg-word">G-BEAT</span><span class="pe-bg-word">MALI</span><span class="pe-bg-word">SALESFORCE</span>
     </div>
     <!-- front layer: project cards, faster (duplicated for seamless loop) -->
     <div class="pe-track">
@@ -472,6 +472,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <article class="pe-card" role="listitem"><span class="pe-ghost">05</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Dutchmill Point Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
       <article class="pe-card" role="listitem"><span class="pe-ghost">06</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">G-Beat ดีด Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
       <article class="pe-card" role="listitem"><span class="pe-ghost">07</span><span class="material-symbols-outlined pe-icon">shopping_bag</span><span class="pe-tag ecom">Loyalty &amp; E-Commerce</span><h3 class="pe-name">Mali Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" role="listitem"><span class="pe-ghost">08</span><span class="material-symbols-outlined pe-icon">policy</span><span class="pe-tag">Insurance &amp; Compensation</span><h3 class="pe-name">Salesforce CRM</h3><p class="pe-meta">&gt; role: business analyst (intern)</p></article>
       <!-- duplicate set for seamless infinite loop -->
       <article class="pe-card" aria-hidden="true"><span class="pe-ghost">01</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Singha Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
       <article class="pe-card" aria-hidden="true"><span class="pe-ghost">02</span><span class="material-symbols-outlined pe-icon">diversity_3</span><span class="pe-tag benefits">Employee Flexible Benefits</span><h3 class="pe-name">AIS Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
@@ -480,6 +481,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <article class="pe-card" aria-hidden="true"><span class="pe-ghost">05</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">Dutchmill Point Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
       <article class="pe-card" aria-hidden="true"><span class="pe-ghost">06</span><span class="material-symbols-outlined pe-icon">card_membership</span><span class="pe-tag">Loyalty Platform</span><h3 class="pe-name">G-Beat ดีด Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
       <article class="pe-card" aria-hidden="true"><span class="pe-ghost">07</span><span class="material-symbols-outlined pe-icon">shopping_bag</span><span class="pe-tag ecom">Loyalty &amp; E-Commerce</span><h3 class="pe-name">Mali Reward</h3><p class="pe-meta">&gt; role: business analyst</p></article>
+      <article class="pe-card" aria-hidden="true"><span class="pe-ghost">08</span><span class="material-symbols-outlined pe-icon">policy</span><span class="pe-tag">Insurance &amp; Compensation</span><h3 class="pe-name">Salesforce CRM</h3><p class="pe-meta">&gt; role: business analyst (intern)</p></article>
     </div>
   </div>
 </section>
@@ -1552,7 +1554,7 @@ const statsObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
     const id = e.target.id;
-    if (id === 'stat-projects') new countUp.CountUp('stat-projects', 7, { duration: 2 }).start();
+    if (id === 'stat-projects') new countUp.CountUp('stat-projects', 8, { duration: 2 }).start();
     if (id === 'stat-years')    { e.target.textContent = '2+'; }
     if (id === 'stat-companies') new countUp.CountUp('stat-companies', 3, { duration: 2 }).start();
     if (id === 'stat-roles')    new countUp.CountUp('stat-roles', 1, { duration: 1.5 }).start();
@@ -1655,14 +1657,20 @@ sections.forEach(s => activeObserver.observe(s));
   let frontLoop = 1, bgLoop = 1;
   function measure(){
     const c = track.children;
-    frontLoop = (c.length > 7 ? c[7].offsetLeft - c[0].offsetLeft : track.scrollWidth / 2) || 1;
-    if (bg) { const b = bg.children; bgLoop = (b.length > 6 ? b[6].offsetLeft - b[0].offsetLeft : bg.scrollWidth / 2) || 1; }
+    // the set is duplicated exactly, so one loop = item 0 -> first clone.
+    // derived from the child count so adding/removing cards can never desync it.
+    const halfF = Math.floor(c.length / 2);
+    frontLoop = (halfF > 0 ? c[halfF].offsetLeft - c[0].offsetLeft : track.scrollWidth / 2) || 1;
+    if (bg) {
+      const b = bg.children, halfB = Math.floor(b.length / 2);
+      bgLoop = (halfB > 0 ? b[halfB].offsetLeft - b[0].offsetLeft : bg.scrollWidth / 2) || 1;
+    }
   }
   measure();
   window.addEventListener('resize', measure);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
-  const SPEED = 0.85;                // auto px/frame (~51px/s)
+  const SPEED = 0.60;                // auto px/frame (~51px/s)
   let offset = 0, mode = 'auto', velocity = 0, resumeTimer = null;
   let startX = 0, startOffset = 0, lastX = 0;
 
