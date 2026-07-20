@@ -280,12 +280,12 @@ body{font-size:clamp(14px,2.5vw,16px);}
 .pe-marquee.grabbing .pe-card .pe-ghost{transform:none;}
 /* back parallax layer — giant faint brand words, half speed */
 .pe-bg-track{position:absolute;inset:0;display:flex;align-items:center;gap:4rem;width:max-content;
-  animation:pe-scroll 90s linear infinite;pointer-events:none;z-index:0;}
+  animation:pe-scroll 53s linear infinite;pointer-events:none;z-index:0;}
 .pe-bg-word{font-family:'Source Code Pro',monospace;font-size:clamp(4rem,11vw,9rem);font-weight:800;
   letter-spacing:-0.03em;line-height:1;white-space:nowrap;color:#ffa3dd;opacity:0.045;}
 /* front layer — project cards, full speed */
 .pe-track{position:relative;z-index:1;display:flex;gap:1.5rem;width:max-content;
-  animation:pe-scroll 46s linear infinite;will-change:transform;}
+  animation:pe-scroll 27s linear infinite;will-change:transform;}
 @keyframes pe-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 .pe-marquee:hover .pe-track,.pe-marquee:hover .pe-bg-track{animation-play-state:paused;}
 
@@ -310,7 +310,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
   .pe-marquee{padding:1.5rem 0;}
   .pe-card{width:250px;min-height:168px;padding:1.25rem;}
   .pe-ghost{font-size:5.5rem;bottom:-1rem;}
-  .pe-track{animation-duration:38s;}
+  .pe-track{animation-duration:22s;}
 }
 @media(prefers-reduced-motion:reduce){
   .pe-track,.pe-bg-track{animation:none;}
@@ -1662,7 +1662,7 @@ sections.forEach(s => activeObserver.observe(s));
   window.addEventListener('resize', measure);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
-  const SPEED = 0.5;                 // auto px/frame (~30px/s)
+  const SPEED = 0.85;                // auto px/frame (~51px/s)
   let offset = 0, mode = 'auto', velocity = 0, resumeTimer = null;
   let startX = 0, startOffset = 0, lastX = 0;
 
