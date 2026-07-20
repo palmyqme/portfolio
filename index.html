@@ -1910,11 +1910,27 @@ async function countVisit() {
         opacity: 0, scale: 0.2 + Math.random() * 0.3, ease: 'none',
       }, 0);
     });
+    // fromTo with an explicit visible start — a plain .to() captures whatever opacity
+    // happens to be set when the scrub first renders (the entrance from() has it at 0),
+    // which would pin these layers invisible for good after the first scroll.
     heroOut
-      .to('[data-depth="label"]',   { y: -100, opacity: 0, ease: 'none' }, 0)
-      .to('[data-depth="bio"]',     { y: -50,  opacity: 0, scale: 0.92, ease: 'none' }, 0)
-      .to('[data-depth="buttons"]', { y: -30,  opacity: 0, ease: 'none' }, 0)
-      .to('[data-depth="pill"]',    { y: 25,   opacity: 0, scale: 0.85, ease: 'none' }, 0);
+      .fromTo('[data-depth="label"]',   { opacity: 1, y: 0 },
+                                        { y: -100, opacity: 0, ease: 'none' }, 0)
+      .fromTo('[data-depth="bio"]',     { opacity: 1, y: 0, scale: 1 },
+                                        { y: -50, opacity: 0, scale: 0.92, ease: 'none' }, 0)
+      .fromTo('[data-depth="buttons"]', { opacity: 1, y: 0 },
+                                        { y: -30, opacity: 0, ease: 'none' }, 0)
+      .fromTo('[data-depth="pill"]',    { opacity: 1, y: 0, scale: 1 },
+                                        { y: 25, opacity: 0, scale: 0.85, ease: 'none' }, 0);
+
+    // failsafe: if the entrance never ran (frozen rAF / GSAP hiccup), make sure the hero
+    // layers are visible while we are still at the top of the page.
+    setTimeout(() => {
+      if (window.scrollY > 60) return;   // scrolled away: the fade-out is legitimate
+      // set unconditionally — a computed-opacity check is unreliable here because
+      // .glass-card has transition:all, which can report a stale value mid-transition.
+      document.querySelectorAll('#hero .gsap-hero > *').forEach(el => gsap.set(el, { opacity: 1 }));
+    }, 2600);
 
     // 1c. Mouse-driven 3D tilt — hero only (1 viewport, no page warp, no fixed-element break)
     const heroStage = document.querySelector('#hero .gsap-hero');
