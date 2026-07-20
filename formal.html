@@ -1375,6 +1375,38 @@ document.querySelectorAll('section[id]').forEach(s => activeObserver.observe(s))
   marquee.addEventListener('dragstart', e => e.preventDefault());
 })();
 
+/* ── SUBTLE SCROLL PARALLAX — restrained depth, no animation library ──
+   Layers drift at different rates as they cross the viewport. Desktop only,
+   transform-only (GPU-cheap), and skipped entirely for reduced motion. */
+(function parallax(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.innerWidth < 769) return;
+  const groups = [
+    ['#hero .max-w-4xl', 90],                      // hero drifts most (deepest layer)
+    ['.section-heading-wrap', 52],                 // headings lag behind their section
+    ['section .font-body-md.text-body-md', 30],    // intro copy, gentler
+    ['#project-experience .pe-marquee', 38],       // the slider strip itself
+  ];
+  const items = [];
+  groups.forEach(([sel, amt]) => document.querySelectorAll(sel).forEach(el => items.push({ el, amt })));
+  if (!items.length) return;
+
+  let ticking = false;
+  function update(){
+    const vh = window.innerHeight;
+    for (const { el, amt } of items) {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) continue;      // skip far off-screen
+      const delta = ((r.top + r.height / 2) - vh / 2) / vh;   // ~ -0.5 .. 0.5
+      el.style.transform = 'translate3d(0,' + (delta * amt).toFixed(1) + 'px,0)';
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
 /* ── VISIT COUNTER ── */
 async function countVisit() {
   try {
