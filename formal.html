@@ -56,19 +56,18 @@
 tailwind.config = {
   theme: {
     extend: {
-      colors: {
-        "background":"var(--bg)","surface":"var(--bg)","surface-dim":"var(--bg)",
-        "surface-container-lowest":"var(--sc-lowest)","surface-container-low":"#1c1b1b",
-        "surface-container":"#201f1f","surface-container-high":"#2a2a2a",
-        "surface-container-highest":"var(--outline-variant)","surface-bright":"#3a3939",
-        "on-surface":"var(--on-surface)","on-surface-variant":"var(--on-surface-variant)",
-        "outline":"#9e8c95","outline-variant":"var(--outline-variant)",
-        "primary":"var(--fx-2)","primary-container":"var(--fx)",
-        "primary-fixed":"var(--fx-2)","primary-fixed-dim":"var(--fx-2)",
-        "on-primary":"#581346","on-primary-container":"#7c3366",
-        "on-primary-fixed-variant":"#732b5e","secondary":"#c8c6c5",
-        "text-primary":"var(--text-primary)","surface-variant":"var(--outline-variant)",
-        "surface-tint":"var(--fx-2)","inverse-primary":"#8f4377",
+      colors: {        "background":"rgb(var(--t-bg) / <alpha-value>)","surface":"rgb(var(--t-bg) / <alpha-value>)","surface-dim":"rgb(var(--t-bg) / <alpha-value>)",
+        "surface-container-lowest":"rgb(var(--t-sc-lowest) / <alpha-value>)","surface-container-low":"rgb(var(--t-sc-low) / <alpha-value>)",
+        "surface-container":"rgb(var(--t-sc) / <alpha-value>)","surface-container-high":"rgb(var(--t-sc-high) / <alpha-value>)",
+        "surface-container-highest":"rgb(var(--t-sc-highest) / <alpha-value>)","surface-bright":"rgb(var(--t-sc-highest) / <alpha-value>)",
+        "on-surface":"rgb(var(--t-on-surface) / <alpha-value>)","on-surface-variant":"rgb(var(--t-on-surface-variant) / <alpha-value>)",
+        "outline":"rgb(var(--t-outline) / <alpha-value>)","outline-variant":"rgb(var(--t-outline-variant) / <alpha-value>)",
+        "primary":"rgb(var(--t-primary) / <alpha-value>)","primary-container":"rgb(var(--t-primary-container) / <alpha-value>)",
+        "primary-fixed":"rgb(var(--t-primary) / <alpha-value>)","primary-fixed-dim":"rgb(var(--t-primary-container) / <alpha-value>)",
+        "on-primary":"rgb(var(--t-on-primary) / <alpha-value>)","on-primary-container":"rgb(var(--t-on-primary-container) / <alpha-value>)",
+        "on-primary-fixed-variant":"rgb(var(--t-on-primary-container) / <alpha-value>)","secondary":"rgb(var(--t-on-surface-variant) / <alpha-value>)",
+        "text-primary":"rgb(var(--t-text-primary) / <alpha-value>)","surface-variant":"rgb(var(--t-sc-highest) / <alpha-value>)",
+        "surface-tint":"rgb(var(--t-primary-container) / <alpha-value>)","inverse-primary":"rgb(var(--t-primary-container) / <alpha-value>)",
       },
       fontFamily: {
         "headline-xl":["Source Code Pro"],"headline-lg":["Source Code Pro"],"headline-lg-mobile":["Source Code Pro"],
@@ -98,7 +97,11 @@ tailwind.config = {
 </script>
 
 <style>
-/* ===== MONOCHROME THEME TOKENS — light (default) + dark ===== */
+/* ===== MONOCHROME THEME TOKENS — light (default) + dark =====
+   three forms on purpose:
+   --x        hex, for plain CSS
+   --t-x      "r g b" triplet, for Tailwind's <alpha-value>
+   --fx-rgb   "r,g,b" comma, for canvas (canvas cannot read CSS vars) */
 :root{
   --bg:#ffffff; --sc-lowest:#fbfbfc; --sc-low:#f7f7f8; --sc:#f4f4f5;
   --sc-high:#ececee; --sc-highest:#e4e4e7;
@@ -106,8 +109,15 @@ tailwind.config = {
   --outline:#a1a1aa; --outline-variant:#d4d4d8;
   --primary:#18181b; --primary-container:#27272a;
   --on-primary:#ffffff; --on-primary-container:#ffffff;
-  --text-primary:#09090b;
-  --fx:#18181b; --fx-2:#3f3f46; --fx-rgb:24,24,27;
+  --text-primary:#09090b; --fx:#18181b; --fx-2:#3f3f46;
+  --fx-rgb:24,24,27;
+  --t-bg:255 255 255; --t-sc-lowest:251 251 252; --t-sc-low:247 247 248; --t-sc:244 244 245;
+  --t-sc-high:236 236 238; --t-sc-highest:228 228 231;
+  --t-on-surface:24 24 27; --t-on-surface-variant:82 82 91;
+  --t-outline:161 161 170; --t-outline-variant:212 212 216;
+  --t-primary:24 24 27; --t-primary-container:39 39 42;
+  --t-on-primary:255 255 255; --t-on-primary-container:255 255 255;
+  --t-text-primary:9 9 11;
 }
 html[data-theme="dark"]{
   --bg:#0b0b0c; --sc-lowest:#0f0f11; --sc-low:#131315; --sc:#151517;
@@ -116,13 +126,27 @@ html[data-theme="dark"]{
   --outline:#52525b; --outline-variant:#3f3f46;
   --primary:#fafafa; --primary-container:#e4e4e7;
   --on-primary:#09090b; --on-primary-container:#09090b;
-  --text-primary:#ffffff;
-  --fx:#fafafa; --fx-2:#d4d4d8; --fx-rgb:250,250,250;
+  --text-primary:#ffffff; --fx:#fafafa; --fx-2:#d4d4d8;
+  --fx-rgb:250,250,250;
+  --t-bg:11 11 12; --t-sc-lowest:15 15 17; --t-sc-low:19 19 21; --t-sc:21 21 23;
+  --t-sc-high:29 29 32; --t-sc-highest:38 38 42;
+  --t-on-surface:237 237 239; --t-on-surface-variant:161 161 170;
+  --t-outline:82 82 91; --t-outline-variant:63 63 70;
+  --t-primary:250 250 250; --t-primary-container:228 228 231;
+  --t-on-primary:9 9 11; --t-on-primary-container:9 9 11;
+  --t-text-primary:255 255 255;
 }
 body{transition:background-color .3s ease,color .3s ease;}
-/* canvas blending has to flip with the theme or it washes out */
 #starfield{mix-blend-mode:multiply;}
 html[data-theme="dark"] #starfield{mix-blend-mode:screen;}
+/* "Available for opportunities" keeps a live green in both themes */
+.status-live{border:1px solid rgba(34,197,94,0.45) !important;background:rgba(34,197,94,0.08) !important;}
+.status-dot{width:8px;height:8px;border-radius:9999px;background:#22c55e;display:inline-block;flex-shrink:0;
+  animation:pulseGreen 2s ease-in-out infinite;}
+@keyframes pulseGreen{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.55);}50%{box-shadow:0 0 0 8px rgba(34,197,94,0);}}
+.status-text{color:#15803d;}
+html[data-theme="dark"] .status-text{color:#4ade80;}
+@media(prefers-reduced-motion:reduce){.status-dot{animation:none;}}
 /* theme toggle */
 #theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
   min-height:0;border-radius:9999px;border:1px solid var(--outline-variant);background:var(--sc);
@@ -373,7 +397,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
 <div id="cursor-trail-3" class="hidden md:block w-2 h-2" style="background:rgba(var(--fx-rgb),0.10);transform:translate(-50%,-50%);"></div>
 
 <!-- FIXED NAV -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-2xl border-b border-white/5">
+<header class="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-2xl border-b border-outline-variant">
   <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop flex items-center justify-between h-16 relative">
     <a href="#" class="logo-gimmick font-bold tracking-tighter text-xl" style="min-height:0;">Akarasiri C.</a>
     <!-- Desktop nav -->
@@ -446,9 +470,9 @@ body{font-size:clamp(14px,2.5vw,16px);}
         <span class="material-symbols-outlined text-base">link</span> View LinkedIn
       </a>
     </div>
-    <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full border border-primary-container/30" data-depth="pill">
-      <span class="current-role-dot w-2 h-2 rounded-full bg-primary-container inline-block"></span>
-      <span class="font-label-mono text-label-mono text-on-surface-variant">Available for opportunities</span>
+    <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full status-live" data-depth="pill">
+      <span class="status-dot"></span>
+      <span class="font-label-mono text-label-mono status-text">Available for opportunities</span>
     </div>
   </div>
 </section>
@@ -657,9 +681,9 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <!-- Card 1: TIGET -->
       <div class="project-card glass-card overflow-hidden group rounded-xl cursor-pointer relative" data-project="tiget">
         <div class="h-48 overflow-hidden bg-surface-container relative">
-          <img src="PIC/Tiget.png" alt="TIGET" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#201f1f,var(--outline-variant))'" />
+          <img src="PIC/Tiget.png" alt="TIGET" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,var(--sc),var(--outline-variant))'" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div class="flex items-center gap-2 text-on-primary-container font-label-mono text-label-mono">
+            <div class="flex items-center gap-2 text-white font-label-mono text-label-mono">
               <span class="material-symbols-outlined text-primary-container">open_in_full</span>
               <span class="text-primary-container">View Details</span>
             </div>
@@ -683,7 +707,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <!-- Card 2: MUSE -->
       <div class="project-card glass-card overflow-hidden group rounded-xl cursor-pointer relative" data-project="muse">
         <div class="h-48 overflow-hidden bg-surface-container relative">
-          <img src="PIC/MUSE.png" alt="MUSE" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#201f1f,var(--outline-variant))'" />
+          <img src="PIC/MUSE.png" alt="MUSE" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,var(--sc),var(--outline-variant))'" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="flex items-center gap-2 font-label-mono text-label-mono">
               <span class="material-symbols-outlined text-primary-container">open_in_full</span>
@@ -709,7 +733,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <!-- Card 3: MAKE -->
       <div class="project-card glass-card overflow-hidden group rounded-xl cursor-pointer relative" data-project="make">
         <div class="h-48 overflow-hidden bg-surface-container relative">
-          <img src="PIC/Make.png" alt="MAKE by KBANK" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#201f1f,var(--outline-variant))'" />
+          <img src="PIC/Make.png" alt="MAKE by KBANK" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,var(--sc),var(--outline-variant))'" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="flex items-center gap-2 font-label-mono text-label-mono">
               <span class="material-symbols-outlined text-primary-container">open_in_full</span>
@@ -735,7 +759,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <!-- Card 4: Marvel Snap -->
       <div class="project-card glass-card overflow-hidden group rounded-xl cursor-pointer relative" data-project="marvel">
         <div class="h-48 overflow-hidden bg-surface-container relative">
-          <img src="PIC/Marvel Snap Deck.png" alt="Marvel Snap" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#201f1f,var(--outline-variant))'" />
+          <img src="PIC/Marvel Snap Deck.png" alt="Marvel Snap" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,var(--sc),var(--outline-variant))'" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="flex items-center gap-2 font-label-mono text-label-mono">
               <span class="material-symbols-outlined text-primary-container">open_in_full</span>
@@ -761,7 +785,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <!-- Card 5: Living Tea -->
       <div class="project-card glass-card overflow-hidden group rounded-xl cursor-pointer relative" data-project="livingtea">
         <div class="h-48 overflow-hidden bg-surface-container relative">
-          <img src="PIC/Living Tea.png" alt="The Living Tea" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#201f1f,var(--outline-variant))'" />
+          <img src="PIC/Living Tea.png" alt="The Living Tea" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,var(--sc),var(--outline-variant))'" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="flex items-center gap-2 font-label-mono text-label-mono">
               <span class="material-symbols-outlined text-primary-container">open_in_full</span>
@@ -787,7 +811,7 @@ body{font-size:clamp(14px,2.5vw,16px);}
       <!-- Card 6: Infographic -->
       <div class="project-card glass-card overflow-hidden group rounded-xl cursor-pointer relative" data-project="infographic">
         <div class="h-48 overflow-hidden bg-surface-container relative">
-          <img src="PIC/Impression Management Infographic.png" alt="Infographic" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#201f1f,var(--outline-variant))'" />
+          <img src="PIC/Impression Management Infographic.png" alt="Infographic" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,var(--sc),var(--outline-variant))'" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="flex items-center gap-2 font-label-mono text-label-mono">
               <span class="material-symbols-outlined text-primary-container">open_in_full</span>
@@ -1097,13 +1121,13 @@ body{font-size:clamp(14px,2.5vw,16px);}
           <div class="flex gap-3 flex-wrap">
             <a href="https://open.spotify.com/artist/7kYCdA2vk4Pjv5yvX8zgF3?si=J_Sg46KZSlun2oFwZSZggQ" target="_blank" rel="noopener"
                class="flex items-center gap-2 font-label-mono text-label-mono px-4 py-2 rounded-full text-sm transition-all"
-               style="background:rgba(var(--fx-rgb),0.1);border:1px solid rgba(var(--fx-rgb),0.4);color:var(--fx);">
+               style="background:rgba(29,185,84,0.1);border:1px solid rgba(29,185,84,0.4);color:#1DB954;">
               <span>Spotify</span>
               <span class="material-symbols-outlined text-sm">open_in_new</span>
             </a>
             <a href="https://music.apple.com/us/artist/palmy-qme/1628544685" target="_blank" rel="noopener"
                class="flex items-center gap-2 font-label-mono text-label-mono px-4 py-2 rounded-full text-sm transition-all"
-               style="background:rgba(var(--fx-rgb),0.1);border:1px solid rgba(var(--fx-rgb),0.4);color:var(--fx);">
+               style="background:rgba(252,60,68,0.1);border:1px solid rgba(252,60,68,0.4);color:#FC3C44;">
               <span>Apple Music</span>
               <span class="material-symbols-outlined text-sm">open_in_new</span>
             </a>
@@ -1135,40 +1159,40 @@ body{font-size:clamp(14px,2.5vw,16px);}
 
       <!-- Right: YouTube banner -->
       <a href="https://www.youtube.com/@palmyqme" target="_blank" rel="noopener"
-         class="group block glass-card rounded-2xl overflow-hidden cursor-pointer relative hover:border-outline transition-all duration-500 reveal-hidden"
-         style="border-color:var(--outline-variant);">
-        <div class="relative h-48 overflow-hidden" style="background:linear-gradient(135deg,var(--sc-high),var(--sc),var(--sc-low));">
+         class="group block glass-card rounded-2xl overflow-hidden cursor-pointer relative hover:border-red-500 transition-all duration-500 reveal-hidden"
+         style="border-color:rgba(255,0,0,0.3);">
+        <div class="relative h-48 overflow-hidden" style="background:linear-gradient(135deg,rgba(127,29,29,0.6),rgba(185,28,28,0.4),rgba(32,31,31,1));">
           <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-32 h-32 rounded-full border-2 absolute animate-ping" style="border-color:rgba(var(--fx-rgb),0.25);"></div>
-            <div class="w-24 h-24 rounded-full border-2 absolute animate-pulse" style="border-color:rgba(var(--fx-rgb),0.35);"></div>
-            <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform duration-500 z-10">
-              <span class="material-symbols-outlined text-on-primary-container text-3xl" style="margin-left:3px">play_arrow</span>
+            <div class="w-32 h-32 rounded-full border-2 absolute animate-ping" style="border-color:rgba(239,68,68,0.3);"></div>
+            <div class="w-24 h-24 rounded-full border-2 absolute animate-pulse" style="border-color:rgba(239,68,68,0.4);"></div>
+            <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform duration-500 z-10">
+              <span class="material-symbols-outlined text-white text-3xl" style="margin-left:3px">play_arrow</span>
             </div>
           </div>
-          <span class="material-symbols-outlined absolute top-2 left-4 rotate-12" style="color:rgba(var(--fx-rgb),0.18);font-size:3.5rem;">music_note</span>
-          <span class="material-symbols-outlined absolute bottom-4 right-6 -rotate-12" style="color:rgba(var(--fx-rgb),0.12);font-size:2.5rem;">headphones</span>
+          <span class="material-symbols-outlined absolute top-2 left-4 rotate-12" style="color:rgba(248,113,113,0.3);font-size:3.5rem;">music_note</span>
+          <span class="material-symbols-outlined absolute bottom-4 right-6 -rotate-12" style="color:rgba(248,113,113,0.2);font-size:2.5rem;">headphones</span>
         </div>
         <div class="p-6">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 bg-primary-container rounded-lg flex items-center justify-center">
-              <span class="material-symbols-outlined text-on-primary-container text-sm">play_arrow</span>
+            <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-sm">play_arrow</span>
             </div>
-            <span class="font-label-caps text-label-caps text-primary-container uppercase tracking-widest">YouTube Channel</span>
+            <span class="font-label-caps text-label-caps text-red-400 uppercase tracking-widest">YouTube Channel</span>
           </div>
-          <h3 class="font-headline-md text-text-primary mb-1 group-hover:text-primary-container transition-colors">PALMY QME</h3>
+          <h3 class="font-headline-md text-text-primary mb-1 group-hover:text-red-400 transition-colors">PALMY QME</h3>
           <p class="font-label-mono text-label-mono text-on-surface-variant mb-4">R&B · Hip-Hop · Creative Content</p>
           <div class="flex gap-4 mb-4">
             <div class="text-center">
-              <p class="font-headline-md text-primary-container">6M+</p>
+              <p class="font-headline-md text-red-400">6M+</p>
               <p class="font-label-caps text-label-caps text-on-surface-variant">All-Platform Streams</p>
             </div>
             <div class="w-px bg-outline-variant"></div>
             <div class="text-center">
-              <p class="font-headline-md text-primary-container">7K+/day</p>
+              <p class="font-headline-md text-red-400">7K+/day</p>
               <p class="font-label-caps text-label-caps text-on-surface-variant">Daily Streams</p>
             </div>
           </div>
-          <div class="flex items-center gap-2 text-primary-container font-label-mono text-label-mono group-hover:gap-4 transition-all">
+          <div class="flex items-center gap-2 text-red-400 font-label-mono text-label-mono group-hover:gap-4 transition-all">
             <span>Visit Channel</span>
             <span class="material-symbols-outlined text-sm">north_east</span>
           </div>
@@ -1337,8 +1361,8 @@ window.addEventListener('themechange', refreshFX);
     const btn = e.target.closest('[data-theme-toggle]');
     if (!btn) return;
     const isDark = root.getAttribute('data-theme') === 'dark';
-    if (isDark) { root.removeAttribute('data-theme'); localStorage.setItem(KEY, 'light'); }
-    else { root.setAttribute('data-theme', 'dark'); localStorage.setItem(KEY, 'dark'); }
+    if (isDark) { root.removeAttribute('data-theme'); localStorage.setItem(KEY,'light'); }
+    else { root.setAttribute('data-theme','dark'); localStorage.setItem(KEY,'dark'); }
     window.dispatchEvent(new Event('themechange'));
   });
 })();
