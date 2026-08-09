@@ -374,6 +374,14 @@ body{font-size:clamp(14px,2.5vw,16px);}
   .pe-track,.pe-bg-track{animation:none;}
   .pe-marquee{overflow-x:auto;}
 }
+
+/* ===== PERFORMANCE MODE — drop always-on GPU/CPU loops ===== */
+body{cursor:auto !important;}                         /* custom cursor is off, restore pointer */
+#starfield,#ai-particles,
+#cursor-dot,#cursor-ring,#cursor-trail-1,#cursor-trail-2,#cursor-trail-3{display:none !important;}
+/* stop forever-looping decorative CSS animations (BUZZEBEES pulse dot is kept) */
+.ambient-line,.ambient-square,.ambient-hex,.ambient-note,.ambient-diamond,
+.orb-1,.orb-2,.orb-3{animation:none !important;}
 </style>
 <script>(function(){try{if(localStorage.getItem("formal_theme")==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
@@ -1684,6 +1692,7 @@ sections.forEach(s => activeObserver.observe(s));
 
 /* ── AI PARTICLE CANVAS ── */
 (function(){
+  return; // disabled for performance
   if (window.innerWidth <= 1024) return;
   const canvas = document.getElementById('ai-particles');
   const ctx = canvas.getContext('2d');
@@ -1872,6 +1881,7 @@ async function countVisit() {
 
   /* ── LAYER 0: Starfield (5 depth planes) ── */
   (function starfield() {
+    return; // disabled for performance
     if (!isDesktop || reduce) return;
     const canvas = document.getElementById('starfield');
     if (!canvas) return;
@@ -1910,6 +1920,7 @@ async function countVisit() {
 
   /* ── LAYER 2: Cursor depth trail ── */
   (function cursorTrail() {
+    return; // disabled for performance
     if (!isDesktop || reduce) return;
     const dot = document.getElementById('cursor-dot');
     const ring = document.getElementById('cursor-ring');
@@ -2029,7 +2040,7 @@ async function countVisit() {
     }, 2600);
 
     // 1c. Mouse-driven 3D tilt — hero only (1 viewport, no page warp, no fixed-element break)
-    const heroStage = document.querySelector('#hero .gsap-hero');
+    const heroStage = null; // mouse tilt disabled for performance
     if (heroStage) {
       let tx = 0, ty = 0, cx = 0, cy = 0;
       const onMove = e => {
