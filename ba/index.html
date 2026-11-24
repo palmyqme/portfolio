@@ -210,18 +210,15 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .bl-tabs button[aria-pressed="true"]{color:var(--bg)}
 .no-seg .bl-tabs button[aria-pressed="true"]{background:var(--ink)}
 .items{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.item{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px 16px 16px 18px;border-radius:20px;background:var(--bg-2);
+.item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 16px 16px 18px;border-radius:20px;background:var(--bg-2);
   box-shadow:0 1px 0 var(--line),0 6px 20px rgba(43,29,40,.05);position:relative;overflow:hidden;transition:transform .35s var(--spring),box-shadow .3s,opacity .3s}
 .item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pink)}
 .item:hover{box-shadow:0 1px 0 var(--line),0 18px 36px rgba(255,132,186,.28)}
 .item::before{transition:width .35s var(--spring)}
 .item:hover::before{width:8px}
-.item .lg{transition:transform .45s var(--spring),background .3s}
-.item:hover .lg{transform:rotate(-8deg) scale(1.1);background:var(--pink)}
 .item .av{transition:transform .45s var(--spring)}
 .item:hover .av{transform:scale(1.12)}
 .item.hide{display:none}
-.item .lg{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:16px;background:var(--pink-soft);color:var(--ink)}
 .item .id{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
 .item .t{font-weight:700;font-size:16.5px;letter-spacing:-.01em;line-height:1.25;margin:2px 0 6px}
 .item .meta{display:flex;gap:6px;flex-wrap:wrap}
@@ -661,17 +658,17 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
           <button type="button" aria-pressed="false" data-f="loyalty">Loyalty · 6</button>
           <button type="button" aria-pressed="false" data-f="other">Benefits &amp; CRM · 2</button>
         </div>
-        <span class="small mono">sprint view · assigned to AC</span>
+        <span class="small mono">sprint view · assigned to Akarasiri Chaowana</span>
       </div>
       <div class="items">
-        <div class="item tilt" data-g="loyalty"><span class="lg">S</span><div><div class="id">EPIC-01</div><div class="t">Singha Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="other"><span class="lg">A</span><div><div class="id">EPIC-02</div><div class="t">AIS Reward</div><div class="meta"><span class="tag">Employee flexible benefits</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><span class="lg">ห</span><div><div class="id">EPIC-03</div><div class="t">ปุ๋ยตราหัววัวคันไถ</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><span class="lg">T</span><div><div class="id">EPIC-04</div><div class="t">Tollway</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><span class="lg">D</span><div><div class="id">EPIC-05</div><div class="t">Dutchmill Point Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><span class="lg">G</span><div><div class="id">EPIC-06</div><div class="t">G-Beat ดีด Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><span class="lg">M</span><div><div class="id">EPIC-07</div><div class="t">Mali Reward</div><div class="meta"><span class="tag">Loyalty</span><span class="tag">E-commerce</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="other"><span class="lg">SF</span><div><div class="id">EPIC-08</div><div class="t">Salesforce CRM</div><div class="meta"><span class="tag">Insurance</span><span class="tag">Internship</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-01</div><div class="t">Singha Rewards</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="other"><div><div class="id">EPIC-02</div><div class="t">AIS Reward</div><div class="meta"><span class="tag">Employee flexible benefits</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-03</div><div class="t">ปุ๋ยตราหัววัวคันไถ</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-04</div><div class="t">Tollway</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-05</div><div class="t">Dutchmill Point Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-06</div><div class="t">G-Beat ดีด Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-07</div><div class="t">Mali Reward</div><div class="meta"><span class="tag">Loyalty</span><span class="tag">E-commerce</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
+        <div class="item tilt" data-g="other"><div><div class="id">EPIC-08</div><div class="t">Salesforce CRM</div><div class="meta"><span class="tag">Insurance</span><span class="tag">Internship</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
       </div>
     </div>
   </div>
