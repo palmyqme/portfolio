@@ -338,7 +338,8 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .fact span{color:var(--ink-2);font-size:14.5px}
 
 /* contact: API request */
-.contact-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+.contact-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:16px}
+.contact-grid>*{min-width:0}  /* long JSON lines scroll inside the box instead of widening the column */
 .req{border-radius:var(--r-xl);padding:14px;display:flex;flex-direction:column;gap:12px}
 .url{display:flex;align-items:center;gap:8px;padding:8px;border-radius:16px;background:var(--bg-2);box-shadow:inset 0 0 0 1px var(--line)}
 :root[data-theme="dark"] .url,:root[data-theme="dark"] .code{background:rgba(0,0,0,.25)}
@@ -353,7 +354,8 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .code .s{color:var(--ink)}
 .code .c{color:var(--ink-3)}
 .code a{text-decoration:underline;text-decoration-color:var(--pink);text-underline-offset:3px}
-.resp{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--ink-3);padding:0 6px 4px}
+.resp{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--ink-3);padding:0 6px 4px;height:22px;white-space:nowrap;min-width:0}
+.resp #resp-tx{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .resp .st{font-weight:700;color:#2e9d68;white-space:nowrap}
 .today{padding:26px;border-radius:var(--r-xl);display:flex;flex-direction:column;gap:14px}
 .today dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:15px}
@@ -413,7 +415,8 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   transition:background .25s,transform .3s var(--spring)}
 .quick button:hover{background:var(--pink-soft);transform:translateY(-2px)}
 .quick button b{color:var(--pink-ink);font-weight:600}
-.code{min-height:208px;max-height:340px;overflow:auto}
+/* fixed size: a response never resizes the card or the row next to it */
+.code{height:300px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
 .code .n{color:var(--ink)}
 .code.loading{opacity:.55}
 .resp .st.err{color:#d0453a}
@@ -460,7 +463,7 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   .ai-grid{grid-template-columns:1fr 1fr}
   .pipe{grid-template-columns:repeat(3,1fr)}
   .pipe li:nth-child(3)::after{display:none}
-  .sideb,.contact-grid{grid-template-columns:1fr}
+  .sideb,.contact-grid{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:900px){
   .cf-row{flex-direction:column;align-items:stretch}
@@ -502,7 +505,7 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   .num{grid-row:auto;font-size:52px}
   .artifact{font-size:12px}
   .url{flex-wrap:wrap}.url .path{flex-basis:calc(100% - 80px)}.send{width:100%;justify-content:center}
-  .code{font-size:12px}
+  .code{font-size:12px;height:260px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
