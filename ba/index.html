@@ -17,13 +17,13 @@
 /* palette (colorhunt ff84ba · ffdf82 · 99c2ff · ffefe3): pink is the one accent,
    blue only glows in the background, yellow only marks the name. */
 :root{
-  --pink:#ff84ba; --pink-soft:#ffd3e6; --yellow:#ffdf82; --blue:#99c2ff; --cream:#ffefe3;
+  --pink:#e0679c; --pink-soft:#ffd3e6; --yellow:#ffdf82; --blue:#99c2ff; --cream:#ffefe3;
   --bg:#fff6ef; --bg-2:#ffffff; --ink:#2b1d28; --ink-2:#5b4a56; --ink-3:#7a6873;
   --line:rgba(43,29,40,.1);
   --pink-ink:#b3245f;
   --glass:rgba(255,255,255,.42); --glass-2:rgba(255,255,255,.62);
   --glass-edge:rgba(255,255,255,.95); --glass-shadow:0 12px 40px rgba(120,60,90,.12);
-  --blob-a:rgba(255,132,186,.5); --blob-b:rgba(153,194,255,.45); --blob-c:rgba(255,132,186,.32);
+  --blob-a:rgba(224,103,156,.22); --blob-b:rgba(153,194,255,.24); --blob-c:rgba(224,103,156,.14);
   --r-m:20px; --r-l:28px; --r-xl:36px;
   --wrap:1160px; --pad:clamp(16px,4vw,40px);
   --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -32,12 +32,12 @@
   color-scheme:light;
 }
 :root[data-theme="dark"]{
-  --pink-soft:rgba(255,132,186,.22);
+  --pink-soft:rgba(224,103,156,.16);
   --bg:#1b1420; --bg-2:#241b2a; --ink:#ffefe3; --ink-2:#d9c7c0; --ink-3:#ad9ba3;
   --line:rgba(255,239,227,.1); --pink-ink:#ff9cc8;
   --glass:rgba(255,255,255,.06); --glass-2:rgba(255,255,255,.1);
   --glass-edge:rgba(255,255,255,.22); --glass-shadow:0 12px 40px rgba(0,0,0,.45);
-  --blob-a:rgba(255,132,186,.28); --blob-b:rgba(153,194,255,.18); --blob-c:rgba(255,132,186,.16);
+  --blob-a:rgba(224,103,156,.14); --blob-b:rgba(153,194,255,.1); --blob-c:rgba(224,103,156,.08);
   color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -149,7 +149,7 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .btn.primary .ms{transition:transform .3s var(--spring)}
 .btn.primary:hover .ms{transform:translateX(3px) rotate(-12deg)}
 .btn.soft{background:var(--glass-2);box-shadow:inset 0 1px 0 var(--glass-edge),inset 0 0 0 1px var(--line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-.btn.pink{background:var(--pink);color:#2b1d28;box-shadow:0 10px 24px rgba(255,132,186,.4)}
+.btn.pink{background:var(--pink);color:#2b1d28;box-shadow:0 10px 24px rgba(224,103,156,.4)}
 
 .stack{display:grid;gap:16px;perspective:1000px}
 .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
@@ -168,7 +168,7 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .flow{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}
 .flow::before{content:"";position:absolute;left:10%;right:10%;top:21px;height:2px;
   background:repeating-linear-gradient(90deg,var(--ink-3) 0 6px,transparent 6px 12px);opacity:.45}
-.flow .pulse{position:absolute;top:16px;left:10%;width:12px;height:12px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 6px rgba(255,132,186,.25);
+.flow .pulse{position:absolute;top:16px;left:10%;width:12px;height:12px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 6px rgba(224,103,156,.25);
   transition:left .55s var(--ease);opacity:0}
 .flow.run .pulse{opacity:1}
 .node{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;position:relative;z-index:1}
@@ -181,7 +181,7 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .node.dec .sh .ms{transform:rotate(-45deg)}
 .node.end .sh{border-radius:50%;box-shadow:inset 0 0 0 3px var(--line)}
 .node span.l{font-size:11.5px;font-weight:600;color:var(--ink-3);line-height:1.2;transition:color .3s}
-.node.lit .sh{background:var(--pink);color:#2b1d28;box-shadow:0 6px 18px rgba(255,132,186,.45);transform:scale(1.08)}
+.node.lit .sh{background:var(--pink);color:#2b1d28;box-shadow:0 6px 18px rgba(224,103,156,.45);transform:scale(1.08)}
 .node.dec.lit .sh{transform:rotate(45deg) scale(.9)}
 .node.lit span.l{color:var(--ink)}
 .flow-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;flex-wrap:wrap}
@@ -191,40 +191,67 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .run-btn:active{transform:scale(.95)}
 
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border-radius:var(--r-l);overflow:hidden}
-.stat{padding:24px 22px;border-right:1px solid var(--line)}
-.stat:last-child{border-right:0}
-.stat b{display:block;font-size:40px;font-weight:800;letter-spacing:-.05em;line-height:1;color:var(--pink-ink)}
-.stat span{font-size:13.5px;color:var(--ink-2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-radius:var(--r-l);position:relative;z-index:5}
+.stat{position:relative;display:block;padding:24px 22px;border-right:1px solid var(--line);cursor:pointer;transition:background .3s}
+.stat:first-child{border-radius:var(--r-l) 0 0 var(--r-l)}
+.stat:last-child{border-right:0;border-radius:0 var(--r-l) var(--r-l) 0}
+.stat:hover,.stat:focus-visible{background:var(--glass-2)}
+.stat>b{display:flex;align-items:baseline;font-size:40px;font-weight:800;letter-spacing:-.05em;line-height:1;color:var(--pink-ink);font-variant-numeric:tabular-nums}
+.stat>b .u{font-size:.5em;letter-spacing:0;margin:0 .3em 0 .06em}
+.stat:last-child>b .u:last-child,.stat>b .u:last-child{margin-right:0}
+.stat>.lb{font-size:13.5px;color:var(--ink-2)}
+.stat>.lb::after{content:"→";margin-left:6px;opacity:0;display:inline-block;transform:translateX(-4px);transition:.25s}
+.stat:hover>.lb::after{opacity:.7;transform:none}
+/* odometer digits */
+.odo{display:inline-block;height:1em;overflow:hidden}
+.odo-s{display:flex;flex-direction:column;transition:transform 1.5s cubic-bezier(.2,.8,.2,1)}
+.odo-s span{height:1em;line-height:1}
+/* breakdown tooltip */
+.stip{position:absolute;left:12px;bottom:calc(100% + 10px);width:max-content;min-width:220px;max-width:290px;padding:12px 14px;border-radius:14px;
+  background:#2b1d28;color:#ffefe3;font-size:13px;line-height:1.55;letter-spacing:0;box-shadow:0 16px 36px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,239,227,.12);
+  opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .22s,transform .22s;z-index:30}
+.stat:nth-child(even) .stip{left:auto;right:12px}
+.stat:hover .stip,.stat:focus-visible .stip{opacity:1;transform:none}
+.stip .h{display:block;font-family:var(--mono);font-size:11.5px;color:#ad9ba3;margin-bottom:6px}
+.stip .r{display:flex;justify-content:space-between;gap:16px}
+.stip .r i{font-style:normal;color:#ad9ba3}
+.stip .r b{font-family:var(--mono);font-weight:600;color:#ff9cc8}
+.stip .bar{display:flex;gap:3px;height:8px;margin:2px 0 8px}
+.stip .bar i{flex:var(--w);border-radius:3px;background:rgba(255,239,227,.3)}
+.stip .bar i:first-child{background:#ff9cc8}
+/* target highlight after a stat jump */
+.flash{animation:flash 1.8s ease-out}
+@keyframes flash{0%,35%{box-shadow:0 0 0 3px var(--pink-ink),0 14px 34px rgba(224,103,156,.3)}100%{box-shadow:0 0 0 3px transparent}}
 
-/* clients: backlog of work items */
-.backlog{border-radius:var(--r-xl);padding:10px}
-.bl-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px 14px}
-.bl-tabs{position:relative;display:flex;gap:4px;background:var(--glass-2);padding:4px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
-.seg{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:999px;background:var(--ink);box-shadow:0 6px 16px rgba(43,29,40,.25);
-  transition:transform .55s var(--spring),width .55s var(--spring);pointer-events:none}
-.seg.squish{animation:squish .55s var(--spring)}
-@keyframes squish{30%{scale:1.12 .86}60%{scale:.96 1.04}}
-.bl-tabs button{position:relative;z-index:1;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;min-height:36px;color:var(--ink-2);transition:color .3s}
-.bl-tabs button:hover{color:var(--ink)}
-.bl-tabs button[aria-pressed="true"]{color:var(--bg)}
-.no-seg .bl-tabs button[aria-pressed="true"]{background:var(--ink)}
-.items{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 16px 16px 18px;border-radius:20px;background:var(--bg-2);
-  box-shadow:0 1px 0 var(--line),0 6px 20px rgba(43,29,40,.05);position:relative;overflow:hidden;transition:transform .35s var(--spring),box-shadow .3s,opacity .3s}
-.item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pink)}
-.item:hover{box-shadow:0 1px 0 var(--line),0 18px 36px rgba(255,132,186,.28)}
-.item::before{transition:width .35s var(--spring)}
-.item:hover::before{width:8px}
-.item .av{transition:transform .45s var(--spring)}
-.item:hover .av{transform:scale(1.12)}
-.item.hide{display:none}
-.item .id{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
-.item .t{font-weight:700;font-size:16.5px;letter-spacing:-.01em;line-height:1.25;margin:2px 0 6px}
-.item .meta{display:flex;gap:6px;flex-wrap:wrap}
-.item .tag{font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:999px;background:var(--glass-2);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-2)}
-.item .av{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:11px;font-weight:700}
-:root[data-theme="dark"] .item{background:rgba(255,255,255,.05)}
+/* clients: industry cards, the biggest industry gets the biggest card */
+.inds{display:grid;grid-template-columns:1.6fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:12px}
+.ind{position:relative;display:flex;flex-direction:column;gap:6px;padding:22px 22px 22px 24px;border-radius:var(--r-m);background:var(--bg-2);
+  box-shadow:0 1px 0 var(--line),0 6px 20px rgba(43,29,40,.05);overflow:hidden}
+:root[data-theme="dark"] .ind{background:rgba(255,255,255,.05)}
+.ind::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--pink-ink)}
+.ind .k{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.02em}
+.ind h3{font-size:18px;font-weight:700;letter-spacing:-.015em;line-height:1.25}
+.ind p{font-size:14.5px;color:var(--ink-2);line-height:1.45;margin-top:auto}
+.ind.lead{grid-row:span 2;background:#2b1d28;color:#ffefe3;padding:30px 30px 30px 32px;gap:10px}
+:root[data-theme="dark"] .ind.lead{background:#2b1d28;box-shadow:inset 0 0 0 1px rgba(255,239,227,.12)}
+.ind.lead .k{color:#ad9ba3}
+.ind.lead h3{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.03em;max-width:12ch}
+.ind.lead .sub{font-size:14px;color:#d9c7c0}
+.ind.lead .big{position:absolute;right:26px;top:14px;font-size:clamp(64px,8vw,104px);font-weight:800;letter-spacing:-.06em;line-height:1;color:#ff9cc8}
+.ind.lead ul{list-style:none;margin-top:auto;display:grid;gap:8px;padding-top:18px;border-top:1px solid rgba(255,239,227,.14)}
+.ind.lead li{display:flex;justify-content:space-between;gap:12px;font-size:15px;color:#ffefe3}
+.ind.lead li span{font-family:var(--mono);color:#ff9cc8}
+.inds-note{display:flex;justify-content:flex-end;padding:12px 4px 0;font-size:13px;color:var(--ink-3)}
+@media (max-width:760px){
+  .inds{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .ind.lead{grid-column:span 2;grid-row:auto}
+  .ind{padding:18px 16px 18px 18px}
+  .ind h3{font-size:16px}
+}
+@media (max-width:480px){
+  .inds{grid-template-columns:1fr}
+  .ind.lead{grid-column:auto}
+}
 
 /* journey: a real flowchart. Small steps → decision → Buzzebees as the main node */
 .cf{border-radius:var(--r-xl);padding:clamp(18px,3vw,34px);
@@ -242,7 +269,7 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .cf-node{flex:0 1 210px;min-width:0;text-align:left;padding:14px 16px;border-radius:16px;background:var(--bg-2);
   box-shadow:inset 0 0 0 1px var(--line),0 6px 18px rgba(43,29,40,.06);display:grid;gap:2px;transition:transform .35s var(--spring),box-shadow .3s}
 
-.cf-node[aria-expanded="true"]{box-shadow:inset 0 0 0 2px var(--pink),0 10px 24px rgba(255,132,186,.25)}
+.cf-node[aria-expanded="true"]{box-shadow:inset 0 0 0 2px var(--pink),0 10px 24px rgba(224,103,156,.25)}
 .cf-node .st{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 .cf-node b{font-size:15px;line-height:1.25;letter-spacing:-.01em}
 .cf-node .co{font-size:13px;color:var(--ink-2);line-height:1.3}
@@ -401,9 +428,9 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   transition:transform .5s var(--ease),box-shadow .35s,opacity .8s var(--ease)}
 .tilt.hov,.js .tilt.hov[data-reveal].in{--ty:-5px;transition:transform .12s linear,box-shadow .35s}
 .cf-node{position:relative}
-.glass.tilt.hov{box-shadow:var(--glass-shadow),inset 0 1px 0 var(--glass-edge),0 0 0 1.5px rgba(255,132,186,.55),0 18px 40px rgba(255,132,186,.22)}
+.glass.tilt.hov{box-shadow:var(--glass-shadow),inset 0 1px 0 var(--glass-edge),0 0 0 1.5px rgba(224,103,156,.55),0 18px 40px rgba(224,103,156,.22)}
 .tilt .glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
-  background:radial-gradient(220px circle at var(--gx,50%) var(--gy,50%),rgba(255,132,186,.22),transparent 65%)}
+  background:radial-gradient(220px circle at var(--gx,50%) var(--gy,50%),rgba(224,103,156,.22),transparent 65%)}
 .tilt.hov .glare{opacity:1}
 /* ── 4. API console ── */
 .url .method{border:0;cursor:pointer;transition:transform .3s var(--spring)}
@@ -449,7 +476,7 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
 .cf .cf-node.seq{transition:opacity .45s var(--ease),scale .6s var(--spring),transform .5s var(--ease),box-shadow .35s}
 .cf .cf-node.seq.hov{transition:opacity .45s var(--ease),scale .6s var(--spring),transform .12s linear,box-shadow .35s}
 .cf .cf-main.seq.on{animation:mainGlow 1.6s var(--ease) 1}
-@keyframes mainGlow{0%{box-shadow:0 20px 50px rgba(43,29,40,.22),0 0 0 6px var(--pink-soft)}40%{box-shadow:0 20px 50px rgba(43,29,40,.22),0 0 0 14px rgba(255,132,186,.45)}}
+@keyframes mainGlow{0%{box-shadow:0 20px 50px rgba(43,29,40,.22),0 0 0 6px var(--pink-soft)}40%{box-shadow:0 20px 50px rgba(43,29,40,.22),0 0 0 14px rgba(224,103,156,.45)}}
 
 /* motion */
 [data-enter]{opacity:0;transform:translateY(16px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
@@ -480,11 +507,13 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   .cf .conn.seq.on{scale:1}
 }
 @media (max-width:760px){
-  .items,.clauses{grid-template-columns:1fr}
+  .clauses{grid-template-columns:1fr}
 }
 @media (max-width:680px){
   .hero{padding-top:96px;padding-bottom:110px}
   .stats{grid-template-columns:1fr 1fr}
+  .stat,.stat:first-child,.stat:last-child{border-radius:0}
+  .stat:nth-child(2){border-right:0}
   .stat:nth-child(2){border-right:0}
   .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
   .ai-grid{grid-template-columns:1fr}
@@ -642,10 +671,18 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
 
 <div class="wrap" data-reveal>
   <div class="stats glass liquid">
-    <div class="stat"><b data-count="8">8</b><span>Projects delivered</span></div>
-    <div class="stat"><b data-count="2" data-suffix="+">2+</b><span>Years of experience</span></div>
-    <div class="stat"><b data-count="3">3</b><span>Companies</span></div>
-    <div class="stat"><b data-count="7">7</b><span>Loyalty platforms</span></div>
+    <a class="stat" href="#clients" data-hl="all"><b data-odo="8" aria-label="8">8</b><span class="lb">Projects delivered</span>
+      <span class="stip" role="tooltip"><span class="h">by industry</span><span class="bar" aria-hidden="true"><i style="--w:4"></i><i style="--w:1"></i><i style="--w:1"></i><i style="--w:1"></i><i style="--w:1"></i></span>
+        <span class="r"><span>FMCG</span><b>4</b></span><span class="r"><span>Telecommunications</span><b>1</b></span><span class="r"><span>Agriculture</span><b>1</b></span><span class="r"><span>Transportation</span><b>1</b></span><span class="r"><span>Insurance</span><b>1</b></span></span></a>
+    <a class="stat" href="#journey" data-hl="years"><b id="xp-total" aria-label="2 years 9 months">2y 9m</b><span class="lb">Experience</span>
+      <span class="stip" role="tooltip"><span class="h">full-time + internship</span>
+        <span class="r"><span>Full-time <i>· Jul 2025 – now</i></span><b id="xp-ft">1y 4m</b></span><span class="r"><span>Internship <i>· Jan 2024 – May 2025</i></span><b>1y 5m</b></span></span></a>
+    <a class="stat" href="#journey" data-hl="companies"><b data-odo="3" aria-label="3">3</b><span class="lb">Companies</span>
+      <span class="stip" role="tooltip"><span class="h">where I've worked</span>
+        <span class="r"><span>Buzzebees</span><i>Business Analyst</i></span><span class="r"><span>B3 Technology</span><i>BA Intern</i></span><span class="r"><span>Union Inta</span><i>IT Support Intern</i></span></span></a>
+    <a class="stat" href="#clients" data-hl="loyalty"><b data-odo="7" aria-label="7">7</b><span class="lb">Loyalty platforms</span>
+      <span class="stip" role="tooltip"><span class="h">by industry</span><span class="bar" aria-hidden="true"><i style="--w:4"></i><i style="--w:1"></i><i style="--w:1"></i><i style="--w:1"></i></span>
+        <span class="r"><span>FMCG</span><b>4</b></span><span class="r"><span>Telecommunications</span><b>1</b></span><span class="r"><span>Agriculture</span><b>1</b></span><span class="r"><span>Transportation</span><b>1</b></span></span></a>
   </div>
 </div>
 
@@ -653,26 +690,22 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
 <section id="clients">
   <div class="wrap">
     <div class="head" data-reveal><span class="num">01</span><span class="kicker">Trusted by</span><h2>Platforms I've helped shape</h2></div>
-    <div class="artifact glass" data-reveal data-type><span class="kind">API</span><span class="tx" id="cl-tx">GET /clients?analyst=<b>palmy</b> → <span class="ok">200 OK</span> · 8 items</span></div>
-    <div class="backlog glass liquid" data-reveal>
-      <div class="bl-bar">
-        <div class="bl-tabs" role="group" aria-label="Filter clients"><span class="seg" aria-hidden="true"></span>
-          <button type="button" aria-pressed="true" data-f="all">All · 8</button>
-          <button type="button" aria-pressed="false" data-f="loyalty">Loyalty · 6</button>
-          <button type="button" aria-pressed="false" data-f="other">Benefits &amp; CRM · 2</button>
-        </div>
-        <span class="small mono">sprint view · assigned to Akarasiri Chaowana</span>
+    <div class="artifact glass" data-reveal data-type><span class="kind">API</span><span class="tx" id="cl-tx">GET /clients?analyst=<b>palmy</b> → <span class="ok">200 OK</span> · 5 industries</span></div>
+    <div data-reveal>
+      <div class="inds" role="list" aria-label="Projects by industry">
+        <article class="ind lead tilt" role="listitem" data-loyalty data-n="4" data-sys="Customer Loyalty Platform x3, Loyalty &amp; E-commerce Platform x1">
+          <span class="big" aria-hidden="true">4</span>
+          <span class="k">4 projects</span>
+          <h3>Fast-Moving Consumer Goods</h3>
+          <span class="sub">FMCG · Food &amp; Beverage</span>
+          <ul><li>Customer Loyalty Platform<span>×3</span></li><li>Loyalty &amp; E-commerce Platform<span>×1</span></li></ul>
+        </article>
+        <article class="ind tilt" role="listitem" data-loyalty data-n="1" data-sys="Employee Flexible Benefits Platform"><span class="k">1 project</span><h3>Telecommunications</h3><p>Employee Flexible Benefits Platform</p></article>
+        <article class="ind tilt" role="listitem" data-loyalty data-n="1" data-sys="Customer Loyalty Platform"><span class="k">1 project</span><h3>Agriculture &amp; Fertilizers</h3><p>Customer Loyalty Platform</p></article>
+        <article class="ind tilt" role="listitem" data-loyalty data-n="1" data-sys="Customer Loyalty Platform"><span class="k">1 project</span><h3>Transportation &amp; Infrastructure</h3><p>Customer Loyalty Platform</p></article>
+        <article class="ind tilt" role="listitem" data-n="1" data-sys="Tax Calculation &amp; Insurance Agent Management on Salesforce (Internship)"><span class="k">1 project</span><h3>Insurance</h3><p>Tax Calculation &amp; Agent Management on Salesforce · Internship</p></article>
       </div>
-      <div class="items">
-        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-01</div><div class="t">Singha Rewards</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="other"><div><div class="id">EPIC-02</div><div class="t">AIS Reward</div><div class="meta"><span class="tag">Employee flexible benefits</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-03</div><div class="t">ปุ๋ยตราหัววัวคันไถ</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-04</div><div class="t">Tollway</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-05</div><div class="t">Dutchmill Point Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-06</div><div class="t">G-Beat ดีด Reward</div><div class="meta"><span class="tag">Loyalty platform</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="loyalty"><div><div class="id">EPIC-07</div><div class="t">Mali Reward</div><div class="meta"><span class="tag">Loyalty</span><span class="tag">E-commerce</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-        <div class="item tilt" data-g="other"><div><div class="id">EPIC-08</div><div class="t">Salesforce CRM</div><div class="meta"><span class="tag">Insurance</span><span class="tag">Internship</span></div></div><span class="av" title="Business analyst: Palmy">AC</span></div>
-      </div>
+      <div class="inds-note mono">8 projects · 5 industries</div>
     </div>
   </div>
 </section>
@@ -697,7 +730,7 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
         </button>
         <span class="conn seq" aria-hidden="true"></span>
         <button class="cf-node tilt seq" type="button" aria-expanded="false" aria-controls="cf-inspect" data-i="2">
-          <span class="st">Step 3</span><b>Business Analyst Intern</b><span class="co">B3 Technology</span><span class="wh">Jan 2024 – Apr 2025 · 16 months</span>
+          <span class="st">Step 3</span><b>Business Analyst Intern</b><span class="co">B3 Technology</span><span class="wh">Jan 2024 – May 2025 · 17 months</span>
           <template><ul><li>Improved the efficiency and reliability of Salesforce solutions for insurance clients.</li><li>Wrote PostgreSQL queries in DBeaver for faster data retrieval and analysis.</li><li>Turned client needs into Trigger Flows inside Salesforce.</li><li>Wrote and ran test cases to keep the system stable.</li><li>Supported Salesforce customisation and automation workflows.</li></ul><div class="chips"><span class="chip">Salesforce</span><span class="chip">PostgreSQL</span><span class="chip">Trigger Flow</span><span class="chip">DBeaver</span><span class="chip">Test cases</span></div></template>
         </button>
         <span class="conn seq" aria-hidden="true"></span>
@@ -862,7 +895,6 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
     <span>© <span id="yr"></span> Akarasiri Chaowana</span>
-    <span>Other versions: <a href="../">classic</a> · <a href="../formal.html">formal</a></span>
   </div>
 </footer>
 
@@ -977,40 +1009,6 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   }));
   $('#cf-x').addEventListener('click', closeInsp);
 
-  // backlog filter: sliding pill, cards leave, the rest glide (FLIP), new ones pop in
-  const seg = $('.seg'), tabs = $$('.bl-tabs button'), clTx = $('#cl-tx');
-  const moveSeg = b => { seg.style.width = b.offsetWidth + 'px'; seg.style.transform = `translateX(${b.offsetLeft}px)`; };
-  const placeSeg = () => moveSeg($('.bl-tabs button[aria-pressed="true"]'));
-  addEventListener('load', placeSeg); addEventListener('resize', placeSeg); placeSeg();
-  const spring = 'cubic-bezier(.3,1.35,.5,1)';
-  let filterRun = 0;
-  tabs.forEach(b => b.addEventListener('click', async () => {
-    if (b.getAttribute('aria-pressed') === 'true') return;
-    const run = ++filterRun;
-    tabs.forEach(x => x.setAttribute('aria-pressed', x === b));
-    moveSeg(b); seg.classList.remove('squish'); void seg.offsetWidth; seg.classList.add('squish');
-    const f = b.dataset.f, items = $$('.item'), show = it => f === 'all' || it.dataset.g === f;
-    items.forEach(it => it.getAnimations().forEach(a => a.cancel())); // a fast second click must not leave cards faded out
-    const n = items.filter(show).length, q = f === 'all' ? '' : `&amp;type=${f}`;
-    clTx.innerHTML = `GET /clients?analyst=<b>palmy</b>${q} → <span class="ok">200 OK</span> · ${n} items`;
-    const leaving = items.filter(it => !it.classList.contains('hide') && !show(it));
-    const entering = items.filter(it => it.classList.contains('hide') && show(it));
-    if (reduce) { leaving.forEach(it => it.classList.add('hide')); entering.forEach(it => it.classList.remove('hide')); return; }
-    await Promise.all(leaving.map((it, i) => it.animate(
-      [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-8px) scale(.9) rotate(-2deg)' }],
-      { duration: 220, delay: i * 30, easing: 'ease-in', fill: 'forwards' }).finished)).catch(() => {}); // cancelled by a newer click
-    if (run !== filterRun) return;
-    const staying = items.filter(it => !it.classList.contains('hide') && show(it));
-    const first = new Map(staying.map(it => [it, it.getBoundingClientRect()]));
-    leaving.forEach(it => { it.getAnimations().forEach(a => a.cancel()); it.classList.add('hide'); });
-    entering.forEach(it => it.classList.remove('hide'));
-    staying.forEach(it => { const a = first.get(it), z = it.getBoundingClientRect();
-      if (a.left !== z.left || a.top !== z.top) it.animate([{ transform: `translate(${a.left - z.left}px,${a.top - z.top}px)` }, { transform: 'none' }], { duration: 520, easing: spring }); });
-    entering.forEach((it, i) => it.animate(
-      [{ opacity: 0, transform: 'translateY(18px) scale(.92)' }, { opacity: 1, transform: 'none' }],
-      { duration: 480, delay: 80 + i * 55, easing: spring, fill: 'backwards' }));
-  }));
-
   // card hover: tilt toward the pointer + a pink glare where the pointer is
   if (fine && !reduce) $$('.tilt').forEach(c => {
     const g = document.createElement('span'); g.className = 'glare'; c.appendChild(g);
@@ -1043,7 +1041,7 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
   const out = $('#api-out'), contactHTML = out.innerHTML, mBtn = $('#api-method'), pIn = $('#api-path');
   const txt = (el, sel) => [...el.querySelectorAll(sel)].map(x => x.textContent.trim());
   const api = {
-    '/clients': () => $$('.item').map(it => ({ id: it.querySelector('.id').textContent, name: it.querySelector('.t').textContent, type: txt(it, '.tag').join(', ') })),
+    '/clients': () => $$('.ind').map(c => ({ industry: c.querySelector('h3').textContent, projects: +c.dataset.n, systems: c.dataset.sys })),
     '/skills': () => Object.fromEntries($$('.clause').map(c => [c.querySelector('h3').textContent, c.querySelector('.chips') ? txt(c, '.chip') : c.querySelector('p').textContent])),
     '/experience': () => [...$$('.cf-node').map(n => ({ step: n.querySelector('.st').textContent, role: n.querySelector('b').textContent, at: n.querySelector('.co').textContent, when: n.querySelector('.wh').textContent })),
       { step: 'Step 4', role: 'Business Analyst', at: 'Buzzebees', when: 'Jul 2025 – present', current: true }],
@@ -1144,12 +1142,33 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
     const id = map[en.target.id] || en.target.id; items.forEach(a => a.classList.toggle('active', a.dataset.sec === id)); }), { rootMargin: '-45% 0px -50% 0px' });
   ['top', 'clients', 'journey', 'toolkit', 'ai', 'off-the-clock', 'contact'].forEach(id => io.observe(document.getElementById(id)));
 
-  // count-up
-  const cio = new IntersectionObserver(es => es.forEach(en => { if (!en.isIntersecting) return; cio.unobserve(en.target);
-    const el = en.target, end = +el.dataset.count, suf = el.dataset.suffix || ''; if (reduce) return;
-    const t0 = performance.now(); const step = t => { const k = Math.min(1, (t - t0) / 1200); el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3))) + suf; if (k < 1) requestAnimationFrame(step); };
-    requestAnimationFrame(step); }), { threshold: .6 });
-  $$('[data-count]').forEach(c => cio.observe(c));
+  // experience: full-time since 16 Jul 2025 (live) + 17 months of internship (Jan 2024 – May 2025)
+  const ym = m => `${Math.floor(m / 12)}y ${m % 12}m`;
+  { const now = new Date(); let ft = (now.getFullYear() - 2025) * 12 + now.getMonth() - 6; if (now.getDate() < 16) ft--;
+    ft = Math.max(0, ft); const tot = ft + 17;
+    $('#xp-ft').textContent = ym(ft); $('#xp-total').dataset.odo = ym(tot);
+    $('#xp-total').setAttribute('aria-label', `${Math.floor(tot / 12)} years ${tot % 12} months`); }
+
+  // odometer: each digit rolls from 0 to its value, units stay put
+  $$('[data-odo]').forEach(el => {
+    el.innerHTML = [...el.dataset.odo].map(ch => /\d/.test(ch)
+      ? `<span class="odo" aria-hidden="true"><span class="odo-s" data-d="${ch}">${'0123456789'.split('').map(d => `<span>${d}</span>`).join('')}</span></span>`
+      : ch === ' ' ? '' : `<span class="u" aria-hidden="true">${ch}</span>`).join('');
+  });
+  const roll = el => el.querySelectorAll('.odo-s').forEach((c, i) => { c.style.transitionDelay = i * 120 + 'ms'; c.style.transform = `translateY(-${c.dataset.d}em)`; });
+  if (reduce) $$('[data-odo]').forEach(el => { el.querySelectorAll('.odo-s').forEach(c => c.style.transition = 'none'); roll(el); });
+  else { const cio = new IntersectionObserver(es => es.forEach(en => { if (!en.isIntersecting) return; cio.unobserve(en.target); roll(en.target); }), { threshold: .6 });
+    $$('[data-odo]').forEach(c => cio.observe(c)); }
+
+  // stat click: scroll to the section, then flash what the number counts
+  const hl = { all: () => $$('.ind'), loyalty: () => $$('.ind[data-loyalty]'),
+    years: () => [$('.cf-node[data-i="2"]'), $('.cf-main')], companies: () => [$('.cf-node[data-i="1"]'), $('.cf-node[data-i="2"]'), $('.cf-main')] };
+  $$('.stat[data-hl]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); const t = $(a.getAttribute('href'));
+    t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(() => hl[a.dataset.hl]().filter(Boolean).forEach((el, i) => setTimeout(() => {
+      el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }, i * 90)), reduce ? 0 : 700);
+  }));
 
   const toast = $('#toast'); let tt;
   const say = html => { toast.innerHTML = html; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('show'), 2600); };
@@ -1169,8 +1188,6 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
     { i: 'content_copy', l: 'Copy email address', f: () => navigator.clipboard?.writeText('akarasiri.chao@outlook.com').then(() => say('<span class="ms">check_circle</span> Email copied')) },
     { i: 'open_in_new', l: 'Open LinkedIn', f: () => open('https://www.linkedin.com/in/akarasiri-chaowana/', '_blank', 'noopener') },
     { i: 'contrast', l: 'Switch light / dark', f: toggleTheme },
-    { i: 'history_edu', l: 'Classic version', f: () => location.href = '../' },
-    { i: 'description', l: 'Formal version', f: () => location.href = '../formal.html' },
   ];
   let sel = 0, shown = cmds;
   const render = () => { list.innerHTML = shown.map((c, i) => `<li><button type="button" role="option" aria-selected="${i === sel}" data-i="${i}"><span class="ms">${c.i}</span>${c.l}</button></li>`).join('')
