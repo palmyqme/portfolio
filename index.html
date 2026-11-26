@@ -203,9 +203,9 @@ h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-he
 .stat>.lb::after{content:"→";margin-left:6px;opacity:0;display:inline-block;transform:translateX(-4px);transition:.25s}
 .stat:hover>.lb::after{opacity:.7;transform:none}
 /* odometer digits */
-.odo{display:inline-block;height:1em;overflow:hidden}
+.odo{display:inline-block;height:1.25em;margin:-.125em 0;overflow:hidden}
 .odo-s{display:flex;flex-direction:column;transition:transform 1.5s cubic-bezier(.2,.8,.2,1)}
-.odo-s span{height:1em;line-height:1}
+.odo-s span{height:1.25em;line-height:1.25em}
 /* breakdown tooltip */
 .stip{position:absolute;left:12px;bottom:calc(100% + 10px);width:max-content;min-width:220px;max-width:min(360px,calc(100vw - 32px));padding:12px 14px;border-radius:14px;
   background:#2b1d28;color:#ffefe3;font-size:13px;line-height:1.55;letter-spacing:0;box-shadow:0 16px 36px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,239,227,.12);
@@ -1163,7 +1163,7 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
       ? `<span class="odo" aria-hidden="true"><span class="odo-s" data-d="${ch}">${'0123456789'.split('').map(d => `<span>${d}</span>`).join('')}</span></span>`
       : ch === ' ' ? '' : `<span class="u" aria-hidden="true">${ch}</span>`).join('');
   });
-  const roll = el => el.querySelectorAll('.odo-s').forEach((c, i) => { c.style.transitionDelay = i * 120 + 'ms'; c.style.transform = `translateY(-${c.dataset.d}em)`; });
+  const roll = el => el.querySelectorAll('.odo-s').forEach((c, i) => { c.style.transitionDelay = i * 120 + 'ms'; c.style.transform = `translateY(-${c.dataset.d * 10}%)`; });
   if (reduce) $$('[data-odo]').forEach(el => { el.querySelectorAll('.odo-s').forEach(c => c.style.transition = 'none'); roll(el); });
   else { const cio = new IntersectionObserver(es => es.forEach(en => { if (!en.isIntersecting) return; cio.unobserve(en.target); roll(en.target); }), { threshold: .6 });
     $$('[data-odo]').forEach(c => cio.observe(c)); }
