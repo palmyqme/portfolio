@@ -1163,8 +1163,12 @@ dialog[open] .spot-in{animation:pop .35s var(--spring)}
       ? `<span class="odo" aria-hidden="true"><span class="odo-s" data-d="${ch}">${'0123456789'.split('').map(d => `<span>${d}</span>`).join('')}</span></span>`
       : ch === ' ' ? '' : `<span class="u" aria-hidden="true">${ch}</span>`).join('');
   });
-  const roll = el => el.querySelectorAll('.odo-s').forEach((c, i) => { c.style.transitionDelay = i * 120 + 'ms'; c.style.transform = `translateY(-${c.dataset.d * 10}%)`; });
-  if (reduce) $$('[data-odo]').forEach(el => { el.querySelectorAll('.odo-s').forEach(c => c.style.transition = 'none'); roll(el); });
+  // once a digit stops, swap the clipped strip for a plain digit, so no font or zoom level can cut it
+  const settle = c => { const d = document.createElement('span'); d.setAttribute('aria-hidden', 'true'); d.textContent = c.dataset.d; c.parentNode.replaceWith(d); };
+  const roll = el => el.querySelectorAll('.odo-s').forEach((c, i) => { if (c.dataset.d === '0') return settle(c); // no movement, no transitionend
+    c.addEventListener('transitionend', () => settle(c), { once: true });
+    c.style.transitionDelay = i * 120 + 'ms'; c.style.transform = `translateY(-${c.dataset.d * 10}%)`; });
+  if (reduce) $$('[data-odo] .odo-s').forEach(settle);
   else { const cio = new IntersectionObserver(es => es.forEach(en => { if (!en.isIntersecting) return; cio.unobserve(en.target); roll(en.target); }), { threshold: .6 });
     $$('[data-odo]').forEach(c => cio.observe(c)); }
 
